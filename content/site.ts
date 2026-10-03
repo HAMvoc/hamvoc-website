@@ -6,6 +6,5 @@ export const site = {
   url: "https://hamvoc.vercel.app",
   /** Shown next to the live clock in the header. The clock always uses Vietnam time. */
   place: "Việt Nam",
-  email: "hamvoc.lab@example.com", // TODO: replace with the lab's real address
   github: "https://github.com/hamvoc",
 };

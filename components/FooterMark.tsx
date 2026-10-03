@@ -22,10 +22,12 @@ export function FooterMark() {
     const letters = [...line.querySelectorAll<HTMLSpanElement>("[data-l]")];
     const isHam = letters.map((l) => l.dataset.l === "ham");
     const cur = letters.map(() => 0);
+    const written = letters.map(() => "");
 
     // size the mark to fill the width at rest
     const fit = () => {
       letters.forEach((l) => l.style.removeProperty("--wdth"));
+      written.fill("");
       line.style.fontSize = "100px";
       const w = line.getBoundingClientRect().width;
       line.style.fontSize = `${(100 * el.clientWidth) / w}px`;
@@ -41,9 +43,13 @@ export function FooterMark() {
     let px = -1e4, py = -1e4;
     let inView = false;
     let raf = 0;
+    const kick = () => {
+      if (inView && !raf) raf = requestAnimationFrame(loop);
+    };
     const move = (e: PointerEvent) => {
       px = e.clientX;
       py = e.clientY;
+      kick();
     };
     const loop = () => {
       const radius = el.clientWidth * 0.32;
@@ -55,18 +61,21 @@ export function FooterMark() {
         cur[i] += (target - cur[i]) * 0.12;
         if (Math.abs(target - cur[i]) > 0.001) moving = true;
         const t = cur[i];
-        if (isHam[i]) {
-          l.style.setProperty("--wdth", (125 - 63 * t).toFixed(1));
-          l.style.setProperty("--wght", (900 - 700 * t).toFixed(0));
-        } else {
-          l.style.setProperty("--wght", (300 + 500 * t).toFixed(0));
-        }
+        const style = isHam[i]
+          ? `${(125 - 63 * t).toFixed(1)}|${(900 - 700 * t).toFixed(0)}`
+          : `|${(300 + 500 * t).toFixed(0)}`;
+        if (style === written[i]) return; // nothing changed: don't dirty the style
+        written[i] = style;
+        const [wdth, wght] = style.split("|");
+        if (wdth) l.style.setProperty("--wdth", wdth);
+        l.style.setProperty("--wght", wght);
       });
-      raf = inView || moving ? requestAnimationFrame(loop) : 0;
+      // idle once every letter has settled; the next pointer move wakes it up
+      raf = moving ? requestAnimationFrame(loop) : 0;
     };
     const io = new IntersectionObserver(([e]) => {
       inView = e.isIntersecting;
-      if (inView && !raf) raf = requestAnimationFrame(loop);
+      kick();
     });
     io.observe(el);
     window.addEventListener("pointermove", move, { passive: true });

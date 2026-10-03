@@ -1,6 +1,7 @@
 // Turns member photos into the three images the site uses:
-//   public/people/<slug>.jpg         1200×1600 greyscale, for member pages
-//   public/people/<slug>-sm.jpg       480×640  greyscale, for the hero and hover previews
+//   public/people/<slug>.jpg          960×1280 greyscale, for the hero and member pages (one file,
+//                                               so the hero → member page morph lands on a cached image)
+//   public/people/<slug>-sm.jpg       480×640  greyscale, for hover previews
 //   public/people/<slug>-dither.png   210×280  1-bit Atkinson dither, shown with pixelated scaling
 //
 // Source photos live in content/people/photos/<slug>.(jpg|jpeg|png|webp).
@@ -71,7 +72,7 @@ function atkinson(gray, w, h) {
 async function writeOutputs(slug, input) {
   // `input` is a 1200×1600 greyscale image (any sharp input)
   const base = sharp(input).grayscale();
-  const lg = await base.clone().jpeg({ quality: 84, mozjpeg: true }).toBuffer();
+  const lg = await base.clone().resize(960, 1280).jpeg({ quality: 80, mozjpeg: true }).toBuffer();
   await sharp(lg).toFile(path.join(outDir, `${slug}.jpg`));
   await sharp(lg)
     .resize(480, 640)
@@ -261,7 +262,7 @@ async function fromPlaceholder(slug) {
     .png()
     .toBuffer();
   const grain = await sharp({
-    create: { width: W, height: H, channels: 3, noise: { type: "gaussian", mean: 128, sigma: 26 } },
+    create: { width: W, height: H, channels: 3, noise: { type: "gaussian", mean: 128, sigma: 14 } },
   })
     .grayscale()
     .png()

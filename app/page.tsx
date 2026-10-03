@@ -3,8 +3,9 @@ import { Definition } from "@/components/Definition";
 import { Hero } from "@/components/Hero";
 import { Reveal } from "@/components/Reveal";
 import { Roster } from "@/components/Roster";
-import { Topics } from "@/components/Topics";
-import { getPeople, getStats, getTopics, groupLabel, toCard } from "@/lib/people";
+import { ResearchTeaser } from "@/components/ResearchTeaser";
+import { getAreas, getResearchStats } from "@/lib/papers";
+import { getPeople, getStats, groupLabel, toCard } from "@/lib/people";
 
 export default function Home() {
   const people = getPeople();
@@ -39,7 +40,7 @@ export default function Home() {
           </div>
           <Roster groups={groups} />
         </section>
-        <Topics topics={getTopics()} />
+        <ResearchTeaser areas={getAreas()} stats={getResearchStats()} />
       </main>
     </ViewTransition>
   );

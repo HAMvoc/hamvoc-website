@@ -3,7 +3,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 import { FitName } from "@/components/FitName";
+import { PaperList } from "@/components/PaperList";
 import { Portrait } from "@/components/Portrait";
+import { getPapersBy } from "@/lib/papers";
 import { getPeople, getPerson, groupLabel, toCard } from "@/lib/people";
 
 export const dynamicParams = false;
@@ -42,7 +44,15 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
   const found = getPerson(slug);
   if (!found) notFound();
   const { person: p, index, total, prev, next } = found;
+  const papers = getPapersBy(p.slug);
   const links = Object.entries(p.links).filter(([, v]) => v) as [keyof typeof linkLabels, string][];
+
+  const facts = [
+    [p.role === "advisor" ? "Role" : "Cohort", groupLabel(p)],
+    ["Major", p.major],
+    ["Currently", p.position],
+    ["Topics", p.keywords.join(" / ")],
+  ].filter(([, v]) => v) as [string, string][];
 
   return (
     <ViewTransition
@@ -50,7 +60,7 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
       exit={{ ...slide, default: "page-exit" }}
       default="none"
     >
-      <main className="member">
+      <main className="member" data-theme="dark">
         <div className="member-grid">
           <Portrait person={toCard(p)} />
 
@@ -71,31 +81,23 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
               {p.name}
             </p>
 
-            <dl className="member-facts">
-              <div>
-                <dt className="label">{p.role === "advisor" ? "Role" : "Cohort"}</dt>
-                <dd>{groupLabel(p) || "—"}</dd>
-              </div>
-              {p.major && (
-                <div>
-                  <dt className="label">Major</dt>
-                  <dd>{p.major}</dd>
-                </div>
-              )}
-              {p.position && (
-                <div>
-                  <dt className="label">Currently</dt>
-                  <dd>{p.position}</dd>
-                </div>
-              )}
-            </dl>
+            {facts.length > 0 && (
+              <dl className="member-facts">
+                {facts.map(([k, v]) => (
+                  <div key={k}>
+                    <dt className="label">{k}</dt>
+                    <dd>{v}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
 
             {p.research.length > 0 && (
-              <section className="member-research" aria-labelledby="research-interests">
+              <section className="member-section" aria-labelledby="research-interests">
                 <h2 id="research-interests" className="label">
                   Research interests
                 </h2>
-                <ul>
+                <ul className="member-research">
                   {p.research.map((r) => (
                     <li key={r}>{r}</li>
                   ))}
@@ -103,13 +105,13 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
               </section>
             )}
 
-            {p.keywords.length > 0 && (
-              <p className="member-topics label">
-                <Link className="link-u" href="/#research" transitionTypes={["nav-back"]}>
-                  Topics
-                </Link>{" "}
-                — {p.keywords.join(" / ")}
-              </p>
+            {papers.length > 0 && (
+              <section className="member-section" aria-labelledby="papers">
+                <h2 id="papers" className="label">
+                  Papers <span className="member-count">{papers.length}</span>
+                </h2>
+                <PaperList papers={papers} compact />
+              </section>
             )}
 
             {links.length > 0 && (

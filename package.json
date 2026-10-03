@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "portraits": "node scripts/portraits.mjs",
-    "predev": "node scripts/portraits.mjs",
+    "assets": "node scripts/portraits.mjs && node scripts/papers.mjs",
+    "predev": "npm run assets",
     "dev": "next dev",
-    "build": "node scripts/portraits.mjs && next build",
+    "build": "npm run assets && next build",
     "start": "npx serve out",
     "lint": "eslint"
   },

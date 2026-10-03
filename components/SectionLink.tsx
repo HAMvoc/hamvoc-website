@@ -5,36 +5,44 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { smooth } from "@/lib/lenis";
 
-/** Link to a section of the home page; scrolls smoothly when already there. */
+const trim = (p: string) => p.replace(/\/+$/, "") || "/";
+
+/**
+ * Link to a section ("/#people", "/research/#vision", "#top"). Scrolls smoothly
+ * when the section is on the current page, navigates otherwise.
+ */
 export function SectionLink({
-  hash,
+  href,
   className,
   children,
 }: {
-  hash: `#${string}`;
+  href: string;
   className?: string;
   children: ReactNode;
 }) {
   const pathname = usePathname();
-  if (pathname !== "/" && hash !== "#top") {
+  const [path, hash = ""] = href.split("#");
+  const samePage = !path || trim(path) === trim(pathname);
+
+  if (!samePage || !hash) {
     return (
-      <Link href={`/${hash}`} className={className}>
+      <Link href={href} className={className}>
         {children}
       </Link>
     );
   }
   return (
     <a
-      href={hash}
+      href={`#${hash}`}
       className={className}
       onClick={(e) => {
-        const target = hash === "#top" ? 0 : document.querySelector<HTMLElement>(hash);
+        const target = hash === "top" ? 0 : document.getElementById(hash);
         if (target === null) return;
         e.preventDefault();
         if (smooth.lenis) smooth.lenis.scrollTo(target, { duration: 1.6 });
         else if (target === 0) window.scrollTo({ top: 0 });
         else target.scrollIntoView();
-        if (hash !== "#top") history.replaceState(history.state, "", hash);
+        if (hash !== "top") history.replaceState(history.state, "", `#${hash}`);
       }}
     >
       {children}

@@ -26,7 +26,7 @@ Mỗi người là một file YAML trong `content/people/` và một tấm ảnh
    - `major`
    - `position`: vị trí hiện tại (không đi làm thì bỏ dòng này)
    - `research`: hướng nghiên cứu, **càng cụ thể càng tốt**, mỗi ý một dòng
-   - `keywords`: 1–3 chủ đề ngắn, dùng để gom mọi người theo chủ đề ở mục Research
+   - `keywords`: 1–3 chủ đề ngắn, hiện trong mục Topics trên trang của bạn
    - `links`: email, GitHub, Scholar, LinkedIn, website (đều không bắt buộc)
 3. Bỏ ảnh vào `content/people/photos/<slug>.jpg` (hoặc `.png`, `.webp`).
    Ảnh đứng khoanh tay hoặc chụp chính diện, phông xám hoặc tối, càng formal càng tốt.
@@ -38,9 +38,27 @@ Thứ tự hiển thị: advisor → theo K (khóa cũ trước) → theo tên. 
 
 Các file trong `content/people/` hiện đang là **dữ liệu mẫu**, cần thay bằng thông tin thật.
 
+## Thêm paper
+
+Paper nằm trong `content/research/`, **mỗi thư mục là một hướng nghiên cứu**, mỗi paper là một file `.yml` (xem mẫu `content/research/_paper-template.yml`):
+
+```
+content/research/
+  language-and-speech/
+    _area.yml                      tên, mô tả, thứ tự của hướng nghiên cứu
+    streaming-code-switched-asr.yml
+    streaming-code-switched-asr.pdf   (không bắt buộc) đặt PDF cùng tên là site tự đăng và gắn link
+```
+
+- Thêm hướng nghiên cứu mới = tạo thư mục mới (+ `_area.yml`).
+- `authors` ghi đúng họ tên như trong `content/people/` thì tên đó được gạch chân và link về trang thành viên; paper cũng tự hiện trong mục Papers trên trang của người đó.
+- Trang `/research` liệt kê tất cả paper theo thư mục, mới nhất trước; mục Research ở trang chủ dẫn vào từng hướng.
+
+Các paper hiện có là **dữ liệu mẫu**.
+
 ## Nội dung chung
 
-Tên lab, email liên hệ, link GitHub, địa điểm cạnh đồng hồ: `content/site.ts`.
+Tên lab, link GitHub, địa điểm cạnh đồng hồ: `content/site.ts`.
 
 ## Deploy
 
@@ -52,15 +70,18 @@ Deploy tay từ máy (cần `vercel login` và `vercel link` trước):
 vercel --prod
 ```
 
-Bước build trên Vercel là `npm run build` (khai báo trong `vercel.json`): xử lý ảnh chân dung rồi `next build`.
+Bước build trên Vercel là `npm run build` (khai báo trong `vercel.json`): xử lý ảnh chân dung, đăng các PDF, rồi `next build`.
 
 ## Cấu trúc
 
 ```
-app/                    route: trang chủ, /people/[slug]
-components/             Hero (lineup chân dung), Roster, Topics, FitName, …
+app/                    route: trang chủ, /research, /people/[slug]
+components/             Hero (lineup chân dung), Roster, PaperList, FitName, …
 content/people/         một file .yml cho mỗi người + photos/
+content/research/       mỗi thư mục một hướng nghiên cứu, mỗi file .yml một paper
 content/site.ts         thông tin chung của lab
 lib/people.ts           đọc và sắp xếp dữ liệu thành viên
+lib/papers.ts           đọc paper, nối tác giả với thành viên
 scripts/portraits.mjs   xử lý ảnh → public/people/ (file sinh ra, không commit)
+scripts/papers.mjs      đăng PDF → public/papers/ (file sinh ra, không commit)
 ```

@@ -18,6 +18,9 @@ type Props = {
   delay?: number;
 };
 
+type Fit = { wdth: number; size: number; track: number };
+const fits = new Map<string, Fit>();
+
 /**
  * Sets a name so it fills its container's width exactly, by moving along the
  * typeface's width axis instead of changing size. Short names get wide, long
@@ -49,11 +52,20 @@ export function FitName({
     };
 
     const fit = () => {
+      if (document.fonts.status !== "loaded") return; // fonts.ready below will call again
       el.style.fontSize = "";
       el.style.letterSpacing = "";
       const target = wrap.clientWidth;
       if (!target) return;
       const base = parseFloat(getComputedStyle(el).fontSize);
+      // the same name at the same size and width always fits the same way — measuring
+      // forces layout, so do it once per combination (the hero swaps names every few seconds)
+      const key = `${text}|${target}|${base}|${min}|${max}|${grow}|${maxTrack}`;
+      const known = fits.get(key);
+      if (known) {
+        apply(known, base);
+        return;
+      }
       const wMin = widthAt(min);
       const wMax = widthAt(max);
       let wdth = max;
@@ -79,6 +91,12 @@ export function FitName({
         wdth = lo;
       }
 
+      const result = { wdth, size, track };
+      fits.set(key, result);
+      apply(result, base);
+    };
+
+    const apply = ({ wdth, size, track }: Fit, base: number) => {
       el.style.setProperty("--wdth", wdth.toFixed(2));
       el.style.fontSize = size === base ? "" : `${size}px`;
       el.style.letterSpacing = track ? `${track}em` : "";

@@ -112,20 +112,6 @@ export function toCard(p: Person): PersonCard {
   return { slug, name, callname, role, cohort, major, position, images };
 }
 
-/** Research keywords, most shared first, with the people who listed them. */
-export function getTopics() {
-  const map = new Map<string, Person[]>();
-  for (const p of getPeople()) {
-    for (const k of p.keywords) {
-      const key = map.has(k) ? k : [...map.keys()].find((x) => x.toLowerCase() === k.toLowerCase()) ?? k;
-      map.set(key, [...(map.get(key) ?? []), p]);
-    }
-  }
-  return [...map.entries()]
-    .map(([topic, people]) => ({ topic, people }))
-    .sort((a, b) => b.people.length - a.people.length || a.topic.localeCompare(b.topic));
-}
-
 export function getStats() {
   const people = getPeople();
   const cohorts = [...new Set(people.map((p) => p.cohort).filter(Boolean))].sort(
