@@ -6,8 +6,7 @@
     "portraits": "node scripts/portraits.mjs",
     "predev": "node scripts/portraits.mjs",
     "dev": "next dev",
-    "prebuild": "node scripts/portraits.mjs",
-    "build": "next build",
+    "build": "node scripts/portraits.mjs && next build",
     "start": "npx serve out",
     "lint": "eslint"
   },

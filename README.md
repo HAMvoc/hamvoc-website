@@ -2,7 +2,7 @@
 
 Official website of HAMvọc Lab — Research, Innovation, and Collaboration.
 
-Next.js (static export) · GSAP · Lenis · deploy lên GitHub Pages bằng GitHub Actions.
+Next.js (static export) · GSAP · Lenis · deploy trên Vercel.
 
 ## Chạy local
 
@@ -44,9 +44,15 @@ Tên lab, email liên hệ, link GitHub, địa điểm cạnh đồng hồ: `co
 
 ## Deploy
 
-Mỗi lần push lên `main`, workflow `.github/workflows/deploy.yml` sẽ build và đưa site lên GitHub Pages.
+Site chạy trên Vercel (project `hamvoc`). Khi repo đã được nối với Vercel, mỗi lần push lên `main` sẽ tự deploy production.
 
-Lần đầu cần bật một lần: **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+Deploy tay từ máy (cần `vercel login` và `vercel link` trước):
+
+```bash
+vercel --prod
+```
+
+Bước build trên Vercel là `npm run build` (khai báo trong `vercel.json`): xử lý ảnh chân dung rồi `next build`.
 
 ## Cấu trúc
 
