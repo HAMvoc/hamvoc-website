@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="member" data-theme="dark" style={{ minHeight: "80svh", display: "grid", alignContent: "center" }}>
+    <main className="member" style={{ minHeight: "80svh", display: "grid", alignContent: "center" }}>
       <p className="label" style={{ color: "var(--color-smoke)" }}>
         404
       </p>

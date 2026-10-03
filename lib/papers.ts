@@ -12,7 +12,11 @@ export type Paper = {
   title: string;
   authors: Author[];
   venue: string;
+  /** e.g. a best-paper award */
+  award: string;
   year: number | null;
+  /** "2026", "2026-06" or "2026-06-24" — for ordering */
+  date: string;
   /** first link is where the title points */
   links: PaperLink[];
 };
@@ -30,6 +34,7 @@ const LINKS = [
   ["pdf", "PDF"],
   ["arxiv", "arXiv"],
   ["doi", "DOI"],
+  ["researchgate", "ResearchGate"],
   ["url", "Link"],
   ["project", "Project"],
   ["code", "Code"],
@@ -39,7 +44,9 @@ type RawPaper = {
   title?: string;
   authors?: string[] | string;
   venue?: string;
+  award?: string;
   year?: number | string;
+  date?: string;
   links?: Partial<Record<(typeof LINKS)[number][0], string>>;
 };
 type RawArea = { title?: string; description?: string; order?: number };
@@ -47,6 +54,8 @@ type RawArea = { title?: string; description?: string; order?: number };
 const norm = (s: string) => s.normalize("NFC").trim().toLowerCase();
 const titleFromFolder = (f: string) =>
   f.replace(/^\d+[-_]/, "").replace(/[-_]+/g, " ").replace(/^./, (c) => c.toUpperCase());
+
+const newestFirst = (a: Paper, b: Paper) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title);
 
 const readYaml = <T,>(file: string): T => (parse(readFileSync(file, "utf8")) ?? {}) as T;
 
@@ -57,7 +66,10 @@ export function getAreas(): Area[] {
   if (cache && process.env.NODE_ENV === "production") return cache;
   if (!existsSync(dir)) return (cache = []);
 
-  const members = new Map(getPeople().map((p) => [norm(p.name), p.slug]));
+  // authors are matched on a member's name or any spelling they have published under
+  const members = new Map(
+    getPeople().flatMap((p) => [p.name, ...p.aliases].map((n) => [norm(n), p.slug] as const)),
+  );
   const folders = readdirSync(dir).filter(
     (f) => !f.startsWith("_") && !f.startsWith(".") && statSync(path.join(dir, f)).isDirectory(),
   );
@@ -86,18 +98,21 @@ export function getAreas(): Area[] {
         }
         const links = LINKS.filter(([k]) => given[k]).map(([k, label]) => ({ label, href: given[k]! }));
 
-        const year = Number(raw.year);
+        const date = String(raw.date ?? raw.year ?? "").trim();
+        const year = Number(date.slice(0, 4));
         return {
           slug,
           area: folder,
           title: raw.title.trim(),
           authors,
           venue: raw.venue?.trim() ?? "",
+          award: raw.award?.trim() ?? "",
           year: Number.isFinite(year) && year > 0 ? year : null,
+          date,
           links,
         };
       })
-      .sort((a, b) => (b.year ?? 0) - (a.year ?? 0) || a.title.localeCompare(b.title));
+      .sort(newestFirst);
 
     return {
       order: meta.order ?? 999,
@@ -120,7 +135,7 @@ export function getPapersBy(slug: string): Paper[] {
   return getAreas()
     .flatMap((a) => a.papers)
     .filter((p) => p.authors.some((a) => a.slug === slug))
-    .sort((a, b) => (b.year ?? 0) - (a.year ?? 0));
+    .sort(newestFirst);
 }
 
 export function getResearchStats() {

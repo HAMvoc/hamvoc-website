@@ -42,6 +42,7 @@ export function PaperList({ papers, compact = false }: { papers: Paper[]; compac
             </div>
             <div className="paper-side label">
               {p.venue && <span>{p.venue}</span>}
+              {p.award && <span className="paper-award">{p.award}</span>}
               {p.links.length > 0 && (
                 <span className="paper-links">
                   {p.links.map((l) => (

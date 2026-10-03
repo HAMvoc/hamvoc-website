@@ -52,7 +52,7 @@ export function HeaderShell({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <header ref={ref} className="site-header label" data-dark="">
+    <header ref={ref} className="site-header label">
       {children}
     </header>
   );

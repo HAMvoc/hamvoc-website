@@ -30,9 +30,12 @@ const linkLabels = {
   email: "Email",
   github: "GitHub",
   scholar: "Google Scholar",
+  researchgate: "ResearchGate",
   linkedin: "LinkedIn",
   website: "Website",
 } as const;
+
+const PENDING = "To be updated";
 
 const slide = {
   "nav-forward": "slide-forward",
@@ -47,12 +50,12 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
   const papers = getPapersBy(p.slug);
   const links = Object.entries(p.links).filter(([, v]) => v) as [keyof typeof linkLabels, string][];
 
-  const facts = [
+  // every page shows the same fields; what nobody has filled in yet says so
+  const facts: [string, string][] = [
     [p.role === "advisor" ? "Role" : "Cohort", groupLabel(p)],
     ["Major", p.major],
-    ["Currently", p.position],
-    ["Topics", p.keywords.join(" / ")],
-  ].filter(([, v]) => v) as [string, string][];
+    ["Current position", p.position],
+  ];
 
   return (
     <ViewTransition
@@ -60,9 +63,9 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
       exit={{ ...slide, default: "page-exit" }}
       default="none"
     >
-      <main className="member" data-theme="dark">
+      <main className="member">
         <div className="member-grid">
-          <Portrait person={toCard(p)} />
+          <Portrait person={toCard(p, papers.length)} />
 
           <article className="member-body">
             <div className="member-kicker label">
@@ -81,29 +84,29 @@ export default async function MemberPage({ params }: PageProps<"/people/[slug]">
               {p.name}
             </p>
 
-            {facts.length > 0 && (
-              <dl className="member-facts">
-                {facts.map(([k, v]) => (
-                  <div key={k}>
-                    <dt className="label">{k}</dt>
-                    <dd>{v}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
+            <dl className="member-facts">
+              {facts.map(([k, v]) => (
+                <div key={k}>
+                  <dt className="label">{k}</dt>
+                  <dd>{v || <span className="pending">{PENDING}</span>}</dd>
+                </div>
+              ))}
+            </dl>
 
-            {p.research.length > 0 && (
-              <section className="member-section" aria-labelledby="research-interests">
-                <h2 id="research-interests" className="label">
-                  Research interests
-                </h2>
+            <section className="member-section" aria-labelledby="research-interests">
+              <h2 id="research-interests" className="label">
+                Research interests
+              </h2>
+              {p.research.length > 0 ? (
                 <ul className="member-research">
                   {p.research.map((r) => (
                     <li key={r}>{r}</li>
                   ))}
                 </ul>
-              </section>
-            )}
+              ) : (
+                <p className="member-research-pending pending">{PENDING}</p>
+              )}
+            </section>
 
             {papers.length > 0 && (
               <section className="member-section" aria-labelledby="papers">

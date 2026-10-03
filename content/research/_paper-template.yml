@@ -2,17 +2,20 @@
 #   content/research/<area>/<paper-slug>.yml
 # Put the PDF next to it as <paper-slug>.pdf and it is published and linked automatically.
 # A new area is just a new folder; add an _area.yml to name, describe and order it:
-#   title: Language & speech
-#   description: One sentence about the area.
+#   title: "Computer vision"
+#   description: "One sentence about the area."
 #   order: 1
+# Quote titles that contain a colon.
 
-title: Full paper title
-authors: [Nguyễn Văn A, Hoàng Anh Minh, External Coauthor]   # lab members are matched by full name and linked
-venue: ACL 2025
-year: 2025
-links:            # all optional
-  arxiv: https://arxiv.org/abs/...
+title: "Full paper title: with a subtitle"
+authors: ["Van A Nguyen", "Minh Anh Hoang", "External Coauthor"]   # lab members are matched by name or alias and linked
+venue: "IEEE Access"
+# award: "Best Paper Award"   # optional
+date: "2026-06-24"   # or "2026-06" or "2026" — newest papers are listed first
+links:               # all optional; the title links to the PDF, arXiv or DOI (first one present)
   doi: https://doi.org/...
+  researchgate: https://www.researchgate.net/publication/...
+  arxiv: https://arxiv.org/abs/...
   url: https://...          # publisher page
   project: https://...
   code: https://github.com/...

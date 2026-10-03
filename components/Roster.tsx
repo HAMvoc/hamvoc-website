@@ -58,8 +58,9 @@ export function Roster({ groups }: { groups: Group[] }) {
                 <FitName text={p.callname} className="roster-name" grow={1.9} />
                 <span className="roster-full">{p.name}</span>
                 <span className="roster-meta label">
-                  <span>{p.major}</span>
+                  {p.major && <span>{p.major}</span>}
                   {p.position && <span>{p.position}</span>}
+                  {p.papers ? <span>{p.papers} {p.papers === 1 ? "paper" : "papers"}</span> : null}
                 </span>
               </Link>
             ))}

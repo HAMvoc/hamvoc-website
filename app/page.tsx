@@ -4,13 +4,18 @@ import { Hero } from "@/components/Hero";
 import { Reveal } from "@/components/Reveal";
 import { Roster } from "@/components/Roster";
 import { ResearchTeaser } from "@/components/ResearchTeaser";
-import { getAreas, getResearchStats } from "@/lib/papers";
+import { getAreas, getPapersBy, getResearchStats } from "@/lib/papers";
 import { getPeople, getStats, groupLabel, toCard } from "@/lib/people";
 
 export default function Home() {
   const people = getPeople();
   const stats = getStats();
-  const cards = people.map(toCard);
+  const cards = people.map((p) => toCard(p, getPapersBy(p.slug).length));
+  const summary = [
+    `${stats.people} people`,
+    stats.cohorts.length > 0 && `${stats.cohorts.length} cohorts`,
+    `${getResearchStats().papers} papers`,
+  ].filter(Boolean);
 
   const groups: { label: string; people: typeof cards }[] = [];
   for (const p of cards) {
@@ -35,7 +40,7 @@ export default function Home() {
               People
             </Reveal>
             <p className="section-aside label">
-              {stats.people} people · {stats.cohorts.length} cohorts · {stats.majors} majors
+              {summary.join(" · ")}
             </p>
           </div>
           <Roster groups={groups} />

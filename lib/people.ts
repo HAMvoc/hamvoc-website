@@ -11,14 +11,15 @@ export type Person = {
   name: string;
   /** What people call them — the given name, set large. */
   callname: string;
+  /** Other spellings of the name used on papers, for matching authors. */
+  aliases: string[];
   role: Role;
-  /** e.g. "K19"; empty for advisors */
+  /** e.g. "K19"; empty for advisors or when not filled in yet */
   cohort: string;
   major: string;
-  position: string | null;
+  position: string;
   research: string[];
-  keywords: string[];
-  links: Partial<Record<"email" | "github" | "scholar" | "linkedin" | "website", string>>;
+  links: Partial<Record<"email" | "github" | "scholar" | "researchgate" | "linkedin" | "website", string>>;
   images: { lg: string; sm: string; dither: string };
 };
 
@@ -26,21 +27,24 @@ export type Person = {
 export type PersonCard = Pick<
   Person,
   "slug" | "name" | "callname" | "role" | "cohort" | "major" | "position" | "images"
->;
+> & { papers?: number };
 
 const dir = path.join(process.cwd(), "content/people");
 
 type Raw = {
   name?: string;
   callname?: string;
+  aliases?: string[] | string;
   role?: string;
   cohort?: string | number;
   major?: string;
   position?: string;
   research?: string[] | string;
-  keywords?: string[];
   links?: Person["links"];
 };
+
+const list = (v: string[] | string | undefined) =>
+  (Array.isArray(v) ? v : v ? [v] : []).map((s) => String(s).trim()).filter(Boolean);
 
 function load(file: string): Person {
   const slug = file.replace(/\.yml$/, "");
@@ -50,23 +54,18 @@ function load(file: string): Person {
   const name = raw.name.trim();
   const role: Role = raw.role === "advisor" || raw.role === "alumni" ? raw.role : "member";
   const cohort = raw.cohort == null ? "" : String(raw.cohort).trim().replace(/^(\d+)$/, "K$1");
-  const research = Array.isArray(raw.research)
-    ? raw.research.map((r) => r.trim()).filter(Boolean)
-    : raw.research
-      ? [raw.research.trim()]
-      : [];
 
   return {
     slug,
     name,
     callname: raw.callname?.trim() || name.split(/\s+/).at(-1)!,
+    aliases: list(raw.aliases),
     role,
     cohort,
     major: raw.major?.trim() ?? "",
-    position: raw.position?.trim() || null,
-    research,
-    keywords: (raw.keywords ?? []).map((k) => k.trim()).filter(Boolean),
-    links: raw.links ?? {},
+    position: raw.position?.trim() ?? "",
+    research: list(raw.research),
+    links: Object.fromEntries(Object.entries(raw.links ?? {}).filter(([, v]) => v)),
     images: {
       lg: `/people/${slug}.jpg`,
       sm: `/people/${slug}-sm.jpg`,
@@ -107,9 +106,9 @@ export function getPerson(slug: string) {
   };
 }
 
-export function toCard(p: Person): PersonCard {
+export function toCard(p: Person, papers?: number): PersonCard {
   const { slug, name, callname, role, cohort, major, position, images } = p;
-  return { slug, name, callname, role, cohort, major, position, images };
+  return { slug, name, callname, role, cohort, major, position, images, papers };
 }
 
 export function getStats() {

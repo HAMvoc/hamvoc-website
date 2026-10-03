@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0b0b",
+  themeColor: "#f1f1f1",
 };
 
 // Runs before first paint: marks JS as available and decides whether the

@@ -23,12 +23,14 @@ Mỗi người là một file YAML trong `content/people/` và một tấm ảnh
 2. Điền:
    - `name`: họ tên đầy đủ, có dấu
    - `callname`: tên mọi người hay gọi (không bắt buộc, mặc định là chữ cuối của tên). Tên này được set chữ to trên site.
+   - `aliases`: cách tên bạn được viết trên paper (vd. `Hieu Le Minh Phan`), để paper tự link về trang của bạn
    - `cohort`: K mấy
    - `major`
-   - `position`: vị trí hiện tại (không đi làm thì bỏ dòng này)
+   - `position`: vị trí hiện tại
    - `research`: hướng nghiên cứu, **càng cụ thể càng tốt**, mỗi ý một dòng
-   - `keywords`: 1–3 chủ đề ngắn, hiện trong mục Topics trên trang của bạn
-   - `links`: email, GitHub, Scholar, LinkedIn, website (đều không bắt buộc)
+   - `links`: email, GitHub, Scholar, ResearchGate, LinkedIn, website (đều không bắt buộc)
+
+   Mục nào để trống sẽ hiện "To be updated" trên trang cá nhân.
 3. Bỏ ảnh vào `content/people/photos/<slug>.jpg` (hoặc `.png`, `.webp`).
    Ảnh đứng khoanh tay hoặc chụp chính diện, phông xám hoặc tối, càng formal càng tốt.
 4. Mở pull request.
@@ -37,7 +39,7 @@ Mỗi người là một file YAML trong `content/people/` và một tấm ảnh
 
 Thứ tự hiển thị: advisor → theo K (khóa cũ trước) → theo tên. Thêm `role: advisor` hoặc `role: alumni` nếu cần.
 
-Các file trong `content/people/` hiện đang là **dữ liệu mẫu**, cần thay bằng thông tin thật.
+Danh sách thành viên và tên lấy từ [trang ResearchGate của lab](https://www.researchgate.net/lab/HAMvoc-Lab-Minh-Anh-Hoang) (tên đang viết như trên ResearchGate, chưa có dấu). Mỗi người tự sửa file của mình: tên có dấu, K, ngành, vị trí, hướng nghiên cứu, ảnh.
 
 ## Thêm paper
 
@@ -55,7 +57,7 @@ content/research/
 - `authors` ghi đúng họ tên như trong `content/people/` thì tên đó được gạch chân và link về trang thành viên; paper cũng tự hiện trong mục Papers trên trang của người đó.
 - Trang `/research` liệt kê tất cả paper theo thư mục, mới nhất trước; mục Research ở trang chủ dẫn vào từng hướng.
 
-Các paper hiện có là **dữ liệu mẫu**.
+Các paper hiện có lấy từ trang ResearchGate của lab, metadata (tác giả, nơi đăng, DOI) đối chiếu qua Crossref.
 
 ## Nội dung chung
 

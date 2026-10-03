@@ -177,7 +177,7 @@ export function Hero({ people }: { people: PersonCard[] }) {
   const p = people[active];
 
   return (
-    <section ref={hero} className="hero" data-theme="dark" aria-label="Members of the lab">
+    <section ref={hero} className="hero" aria-label="Members of the lab">
       <div />
       <div className="hero-top label">
         <span>{n} people, one lab</span>
@@ -275,7 +275,9 @@ export function Hero({ people }: { people: PersonCard[] }) {
                 {p.name}
               </span>
               <span className="meta-in" style={{ "--i": 1 } as CSSProperties}>
-                {[groupLabel(p), p.major].filter(Boolean).join(" · ")}
+                {[groupLabel(p), p.major, p.papers && `${p.papers} ${p.papers === 1 ? "paper" : "papers"}`]
+                  .filter(Boolean)
+                  .join(" · ")}
               </span>
               {p.position && (
                 <span className="meta-in" style={{ "--i": 2 } as CSSProperties}>
