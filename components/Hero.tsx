@@ -177,7 +177,7 @@ export function Hero({ people }: { people: PersonCard[] }) {
   const p = people[active];
 
   return (
-    <section ref={hero} className="hero" data-theme="dark" aria-label="Members of the lab">
+    <section ref={hero} className="hero" aria-label="Members of the lab">
       <div />
       <div className="hero-top label">
         <span>{n} people, one lab</span>
