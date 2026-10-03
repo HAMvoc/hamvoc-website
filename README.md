@@ -1,6 +1,7 @@
 # hamvoc-website
 
 Official website of HAMvọc Lab — Research, Innovation, and Collaboration.
+https://hamvoc.vercel.app/
 
 Next.js (static export) · GSAP · Lenis · deploy trên Vercel.
 
