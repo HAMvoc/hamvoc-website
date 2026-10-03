@@ -1,4 +1,4 @@
-# hamvoc.github.io
+# hamvoc-website
 
 Official website of HAMvọc Lab — Research, Innovation, and Collaboration.
 
