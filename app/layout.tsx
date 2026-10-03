@@ -1,60 +1,61 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, IBM_Plex_Mono, Newsreader } from "next/font/google";
+import { Barlow, Be_Vietnam_Pro, JetBrains_Mono } from "next/font/google";
 import { site } from "@/content/site";
-import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { SmoothScroll } from "@/components/SmoothScroll";
+import { Footer } from "@/components/Footer";
 import "./globals.css";
 
-const archivo = Archivo({
+const barlow = Barlow({
   subsets: ["latin", "vietnamese"],
-  axes: ["wdth"],
-  variable: "--font-archivo",
+  weight: ["700", "800"],
+  variable: "--font-barlow",
+  display: "swap",
 });
 
-const newsreader = Newsreader({
+const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
-  style: ["normal", "italic"],
-  axes: ["opsz"],
-  variable: "--font-newsreader",
+  weight: ["400", "500", "600"],
+  variable: "--font-be-vietnam-pro",
+  display: "swap",
 });
 
-const plexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500"],
-  variable: "--font-plex-mono",
+  weight: ["500", "600"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: { default: site.name, template: `%s — ${site.name}` },
   description: site.description,
-  openGraph: { siteName: site.name, type: "website" },
+  openGraph: {
+    siteName: site.name,
+    title: site.name,
+    description: site.description,
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0b0b0b",
+  themeColor: "#111217",
 };
 
-// Runs before first paint: marks JS as available and decides whether the
-// home page plays its intro (once per session, never with reduced motion).
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&!sessionStorage.getItem('hv-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.setAttribute('data-intro','')}catch(e){}})()`;
-
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${archivo.variable} ${newsreader.variable} ${plexMono.variable}`}
+      className={`${barlow.variable} ${beVietnamPro.variable} ${jetbrainsMono.variable}`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: boot }} />
-      </head>
-      <body id="top">
+      <body>
         <Header />
         {children}
         <Footer />
-        <SmoothScroll />
       </body>
     </html>
   );

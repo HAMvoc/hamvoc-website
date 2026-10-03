@@ -43,3 +43,6 @@ next-env.d.ts
 # generated portraits (scripts/portraits.mjs)
 /public/people/
 /public/papers/
+
+# omc state and tools
+.omc/

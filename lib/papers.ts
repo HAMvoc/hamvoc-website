@@ -28,12 +28,26 @@ export type Area = {
   papers: Paper[];
 };
 
+export type VenueGroup = {
+  venue: string;
+  tag: string;
+  papers: Paper[];
+};
+
+export type PublicationCategory = {
+  id: "journals" | "conferences";
+  title: string;
+  tag: string;
+  count: number;
+  venues: VenueGroup[];
+};
+
 const dir = path.join(process.cwd(), "content/research");
 
 const LINKS = [
+  ["doi", "DOI"],
   ["pdf", "PDF"],
   ["arxiv", "arXiv"],
-  ["doi", "DOI"],
   ["researchgate", "ResearchGate"],
   ["url", "Link"],
   ["project", "Project"],
@@ -129,6 +143,80 @@ export function getAreas(): Area[] {
     .sort((a, b) => a.order - b.order || a.area.title.localeCompare(b.area.title))
     .map((a) => a.area);
   return cache;
+}
+
+export function isJournalVenue(venue: string): boolean {
+  const v = venue.toLowerCase();
+  return (
+    v.includes("array") ||
+    v.includes("discover") ||
+    v.includes("access") ||
+    v.includes("journal") ||
+    v.includes("transactions") ||
+    v.includes("letters")
+  );
+}
+
+export function getVenueTag(venue: string): string {
+  const v = venue.toLowerCase();
+  if (v.includes("array")) return "ELSEVIER";
+  if (v.includes("discover")) return "SPRINGER NATURE";
+  if (v.includes("access")) return "IEEE OPEN ACCESS";
+  if (v.includes("ccwc")) return "IEEE CONFERENCE";
+  if (v.includes("jcsse")) return "INTERNATIONAL CONFERENCE";
+  if (isJournalVenue(venue)) return "PEER-REVIEWED JOURNAL";
+  return "PEER-REVIEWED CONFERENCE";
+}
+
+export function getResearchPublications(): {
+  journals: PublicationCategory;
+  conferences: PublicationCategory;
+} {
+  const allPapers = getAreas().flatMap((a) => a.papers);
+
+  const journalsMap = new Map<string, Paper[]>();
+  const confsMap = new Map<string, Paper[]>();
+
+  for (const p of allPapers) {
+    const isJ = isJournalVenue(p.venue);
+    const targetMap = isJ ? journalsMap : confsMap;
+    const existing = targetMap.get(p.venue) ?? [];
+    existing.push(p);
+    targetMap.set(p.venue, existing);
+  }
+
+  const mapToVenues = (m: Map<string, Paper[]>): VenueGroup[] => {
+    return Array.from(m.entries())
+      .map(([venue, papers]) => ({
+        venue,
+        tag: getVenueTag(venue),
+        papers: papers.sort(newestFirst),
+      }))
+      .sort((a, b) => a.venue.localeCompare(b.venue));
+  };
+
+  const journalVenues = mapToVenues(journalsMap);
+  const confVenues = mapToVenues(confsMap);
+
+  const journalCount = journalVenues.reduce((sum, v) => sum + v.papers.length, 0);
+  const confCount = confVenues.reduce((sum, v) => sum + v.papers.length, 0);
+
+  return {
+    journals: {
+      id: "journals",
+      title: "Journal Articles",
+      tag: `${String(journalCount).padStart(2, "0")} JOURNAL ARTICLE${journalCount === 1 ? "" : "S"}`,
+      count: journalCount,
+      venues: journalVenues,
+    },
+    conferences: {
+      id: "conferences",
+      title: "Conference Papers",
+      tag: `${String(confCount).padStart(2, "0")} CONFERENCE PAPER${confCount === 1 ? "" : "S"}`,
+      count: confCount,
+      venues: confVenues,
+    },
+  };
 }
 
 export function getPapersBy(slug: string): Paper[] {
