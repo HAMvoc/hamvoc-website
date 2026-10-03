@@ -1,0 +1,11 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 01
+callname: Placeholder
+cohort: K18
+major: Computer Science
+position: Research Engineer, speech team at a Vietnamese AI startup
+research:
+  - Streaming speech recognition for code-switched Vietnamese–English meetings, where speakers change language mid-sentence.
+  - Tone-aware acoustic modelling — whether explicit pitch features still help end-to-end ASR on the six Vietnamese tones.
+  - Building small, honest test sets from real call-centre audio instead of read speech.
+keywords: [Speech recognition, Vietnamese NLP, Evaluation]

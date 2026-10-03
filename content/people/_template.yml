@@ -1,0 +1,21 @@
+# Copy this file to content/people/<your-slug>.yml (e.g. nguyen-van-a.yml)
+# and put your photo at content/people/photos/<your-slug>.jpg (or .png / .webp)
+# Photo: standing with arms crossed or facing the camera, grey or dark background, formal.
+# Files starting with "_" are ignored.
+
+name: Nguyễn Văn A           # full name, with diacritics
+callname: Văn A              # optional — what people call you. Defaults to the last word of your name.
+cohort: K20                  # "K mấy"
+major: Computer Science
+position: ML Engineer, Example Company   # optional — leave out if you are not working yet
+research:                    # be specific. Not "AI" or "ML" — what exactly are you poking at?
+  - First research interest, one or two sentences.
+  - Second research interest.
+keywords: [Short topic, Another topic]   # 1–3 short topics; used to group people on the home page
+links:                       # all optional
+  email: you@example.com
+  github: https://github.com/you
+  scholar: https://scholar.google.com/citations?user=...
+  linkedin: https://www.linkedin.com/in/you
+  website: https://you.dev
+# role: advisor              # optional: advisor | alumni

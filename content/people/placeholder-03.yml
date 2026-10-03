@@ -1,0 +1,11 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 03
+callname: Placeholder
+cohort: K19
+major: Computer Science
+position: AI Engineer, document intelligence
+research:
+  - Layout-aware extraction from scanned Vietnamese administrative forms — red stamps, handwriting and all.
+  - Diffusion-based restoration of faded thermal-paper receipts before OCR.
+  - Measuring how OCR errors propagate into downstream key–value extraction.
+keywords: [Document AI, Computer vision, Diffusion models]

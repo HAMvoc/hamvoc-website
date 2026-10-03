@@ -1,0 +1,10 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 04
+callname: Placeholder
+cohort: K19
+major: Software Engineering
+research:
+  - Speculative decoding for small on-device language models, when the draft model is almost as large as the target.
+  - Quantisation below 4 bits and its uneven damage to tokens carrying Vietnamese diacritics.
+  - Profiling inference on consumer laptops rather than datacentre GPUs.
+keywords: [Efficient inference, Language models]

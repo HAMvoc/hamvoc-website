@@ -1,0 +1,10 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 11
+callname: Placeholder
+cohort: K23
+major: Applied Mathematics
+research:
+  - Optimisation landscapes of small neural networks — why some random seeds get stuck and others do not.
+  - Learning-rate warm-up explained through sharpness dynamics.
+  - Visualising loss surfaces honestly, without misleading 2D projections.
+keywords: [Optimisation, Deep learning theory]

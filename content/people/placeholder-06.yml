@@ -1,0 +1,11 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 06
+callname: Placeholder
+cohort: K20
+major: Computer Engineering
+position: Embedded AI Intern, robotics
+research:
+  - Visual odometry for low-cost wheeled robots using a single rolling-shutter camera.
+  - Sim-to-real transfer for indoor navigation in narrow, cluttered shophouses.
+  - Running perception models on microcontrollers with less than 512 KB of RAM.
+keywords: [Robotics, Computer vision, Efficient inference]

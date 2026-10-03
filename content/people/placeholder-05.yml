@@ -1,0 +1,11 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 05
+callname: Placeholder
+cohort: K20
+major: Computer Science
+position: Research Assistant, HAMvọc Lab
+research:
+  - Retrieval-augmented generation over Vietnamese legal documents — chunking statutes by article and clause instead of by token count.
+  - Citation faithfulness — does the generated answer actually follow from the passage it cites?
+  - Hard-negative mining for bilingual Vietnamese–English retrievers.
+keywords: [Retrieval, Language models, Vietnamese NLP]

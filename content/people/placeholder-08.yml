@@ -1,0 +1,10 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 08
+callname: Placeholder
+cohort: K21
+major: Computer Science
+research:
+  - Federated learning for hospital imaging when sites differ in scanner vendor, protocol and label quality.
+  - Detecting label noise in chest X-ray datasets through disagreement between models.
+  - Privacy accounting that clinicians can actually read.
+keywords: [Federated learning, Medical imaging]

@@ -1,0 +1,10 @@
+# SAMPLE DATA — replace with real info
+name: Placeholder 10
+callname: Placeholder
+cohort: K22
+major: Computer Science
+research:
+  - Self-supervised pretraining on satellite imagery to map rice paddies and aquaculture ponds in the Mekong Delta.
+  - Tracking the effects of saltwater intrusion from multi-temporal Sentinel-2 imagery.
+  - Label-efficient segmentation from a few hundred hand-drawn polygons.
+keywords: [Remote sensing, Computer vision, Self-supervised learning]
