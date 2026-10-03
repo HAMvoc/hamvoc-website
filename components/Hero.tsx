@@ -177,7 +177,7 @@ export function Hero({ people }: { people: PersonCard[] }) {
   const p = people[active];
 
   return (
-    <section ref={hero} className="hero" aria-label="Members of the lab">
+    <section ref={hero} className="hero" data-theme="dark" aria-label="Members of the lab">
       <div />
       <div className="hero-top label">
         <span>{n} people, one lab</span>
@@ -187,7 +187,6 @@ export function Hero({ people }: { people: PersonCard[] }) {
       <div
         ref={lineup}
         className="lineup"
-        data-cursor="view"
         onPointerEnter={(e) => {
           if (e.pointerType === "mouse") engaged.current = true;
         }}
@@ -218,7 +217,6 @@ export function Hero({ people }: { people: PersonCard[] }) {
               href={`/people/${person.slug}/`}
               className="slice"
               data-active={isOpen || undefined}
-              data-cursor="view"
               aria-label={`${person.name}, ${groupLabel(person)}`}
               onFocus={(e) => open(i, e.timeStamp)}
               onClick={(e) => {

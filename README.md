@@ -39,7 +39,7 @@ Mỗi người là một file YAML trong `content/people/` và một tấm ảnh
 
 Thứ tự hiển thị: advisor → theo K (khóa cũ trước) → theo tên. Thêm `role: advisor` hoặc `role: alumni` nếu cần.
 
-Danh sách thành viên và tên lấy từ [trang ResearchGate của lab](https://www.researchgate.net/lab/HAMvoc-Lab-Minh-Anh-Hoang) (tên đang viết như trên ResearchGate, chưa có dấu). Mỗi người tự sửa file của mình: tên có dấu, K, ngành, vị trí, hướng nghiên cứu, ảnh.
+Danh sách thành viên lấy từ [trang ResearchGate của lab](https://www.researchgate.net/lab/HAMvoc-Lab-Minh-Anh-Hoang). Trên web tên hiển thị bằng tiếng Việt (`name`); cách viết tên trên paper để trong `aliases`. Mỗi người tự kiểm tra lại tên có dấu và điền K, ngành, vị trí, hướng nghiên cứu, ảnh.
 
 ## Thêm paper
 

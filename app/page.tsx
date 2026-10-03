@@ -34,7 +34,7 @@ export default function Home() {
       <main>
         <Hero people={cards} />
         <Definition count={stats.people} from={stats.cohorts[0]} to={stats.cohorts.at(-1)} />
-        <section id="people" className="roster" aria-labelledby="people-title">
+        <section id="people" className="roster" data-theme="dark" aria-labelledby="people-title">
           <div className="section-head">
             <Reveal as="h2" id="people-title" className="section-title">
               People

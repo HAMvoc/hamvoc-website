@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { site } from "@/content/site";
-import { Cursor } from "@/components/Cursor";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { SmoothScroll } from "@/components/SmoothScroll";
@@ -34,7 +33,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f1f1f1",
+  themeColor: "#0b0b0b",
 };
 
 // Runs before first paint: marks JS as available and decides whether the
@@ -56,7 +55,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <Footer />
         <SmoothScroll />
-        <Cursor />
       </body>
     </html>
   );

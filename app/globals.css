@@ -219,8 +219,8 @@ html.js .fit:not([data-fitted]) {
   height: 100svh;
   min-height: 600px;
   max-height: 1200px;
-  background: var(--color-paper);
-  color: var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
   display: grid;
   grid-template-rows: var(--header-h) auto minmax(0, 1fr) auto;
   padding-inline: var(--m);
@@ -231,7 +231,7 @@ html.js .fit:not([data-fitted]) {
   justify-content: space-between;
   gap: var(--g);
   padding-block: 4px 14px;
-  color: var(--color-graphite);
+  color: var(--color-smoke);
 }
 
 .lineup {
@@ -283,7 +283,7 @@ html.js .fit:not([data-fitted]) {
 }
 .slice-dither {
   image-rendering: pixelated;
-  opacity: 0.32;
+  opacity: 0.5;
   transition: opacity 0.6s;
 }
 .slice[data-active] .slice-dither {
@@ -329,8 +329,8 @@ html.js .fit:not([data-fitted]) {
   writing-mode: vertical-rl;
   rotate: 180deg;
   white-space: nowrap;
-  color: var(--color-ink);
-  opacity: 0.85;
+  color: var(--color-paper);
+  opacity: 0.7;
   transition: opacity 0.4s;
 }
 .slice[data-active] .slice-label {
@@ -360,7 +360,7 @@ html.js .fit:not([data-fitted]) {
   display: grid;
   gap: 6px;
   padding-bottom: 0.4em;
-  color: var(--color-graphite);
+  color: var(--color-smoke);
 }
 .hero-meta .hero-fullname {
   font-family: var(--font-serif);
@@ -368,7 +368,7 @@ html.js .fit:not([data-fitted]) {
   font-weight: 300;
   font-size: clamp(20px, 1.8vw, 28px);
   line-height: 1.15;
-  color: var(--color-ink);
+  color: var(--color-paper);
   text-transform: none;
   letter-spacing: 0;
 }
@@ -525,12 +525,17 @@ html[data-intro] .hero-top {
 
 .roster {
   padding: clamp(64px, 10vh, 120px) var(--m) clamp(96px, 14vh, 180px);
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.roster .section-aside {
+  color: var(--color-smoke);
 }
 .roster-group {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: var(--g);
-  border-bottom: 1px solid var(--color-rule);
+  border-bottom: 1px solid var(--color-rule-dark);
 }
 .roster-group-label {
   grid-column: 1 / span 2;
@@ -538,7 +543,7 @@ html[data-intro] .hero-top {
   align-self: start;
   position: sticky;
   top: calc(var(--header-h) + 8px);
-  color: var(--color-graphite);
+  color: var(--color-smoke);
 }
 .roster-rows {
   grid-column: 3 / -1;
@@ -553,7 +558,7 @@ html[data-intro] .hero-top {
   isolation: isolate;
 }
 .roster-row + .roster-row {
-  border-top: 1px solid var(--color-rule);
+  border-top: 1px solid var(--color-rule-dark);
 }
 .roster-row::before,
 .row-invert::before {
@@ -566,11 +571,17 @@ html[data-intro] .hero-top {
   transform-origin: 50% 100%;
   transition: transform 0.5s var(--ease-out-expo);
 }
-.roster-row:hover,
-.roster-row:focus-visible,
 .row-invert:hover,
 .row-invert:focus-visible {
   color: var(--color-paper);
+}
+/* the People section is ink, so its rows flip the other way */
+.roster-row::before {
+  background: var(--color-paper);
+}
+.roster-row:hover,
+.roster-row:focus-visible {
+  color: var(--color-ink);
 }
 .roster-row:hover::before,
 .roster-row:focus-visible::before,
@@ -595,12 +606,12 @@ html[data-intro] .hero-top {
   display: grid;
   gap: 2px;
   padding-bottom: 0.55em;
-  color: var(--color-graphite);
+  color: var(--color-smoke);
   transition: color 0.3s;
 }
 .roster-row:hover .roster-meta,
 .roster-row:focus-visible .roster-meta {
-  color: var(--color-smoke);
+  color: var(--color-graphite);
 }
 @media (max-width: 760px) {
   .roster-group-label {
@@ -932,9 +943,8 @@ html[data-intro] .hero-top {
 /* ───────────────────────── footer ───────────────────────── */
 
 .site-footer {
-  background: var(--color-paper);
-  color: var(--color-ink);
-  border-top: 1px solid var(--color-rule);
+  background: var(--color-ink);
+  color: var(--color-paper);
   padding: clamp(40px, 7vh, 88px) var(--m) 0;
   overflow: hidden;
 }
@@ -969,8 +979,8 @@ html[data-intro] .hero-top {
   flex-wrap: wrap;
   gap: 8px 24px;
   padding-block: 20px 24px;
-  border-top: 1px solid var(--color-rule);
-  color: var(--color-graphite);
+  border-top: 1px solid var(--color-rule-dark);
+  color: var(--color-smoke);
 }
 
 /* ───────────────────────── member page ───────────────────────── */
@@ -1161,42 +1171,6 @@ html[data-intro] .hero-top {
   }
   .member-body {
     grid-column: 1 / -1;
-  }
-}
-
-/* ───────────────────────── cursor ───────────────────────── */
-
-.cursor {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
-  border-radius: 50%;
-  background: #fff;
-  mix-blend-mode: difference;
-  pointer-events: none;
-  opacity: 0;
-  transition:
-    scale 0.35s var(--ease-out-expo),
-    opacity 0.2s;
-}
-.cursor[data-visible] {
-  opacity: 1;
-}
-.cursor[data-state="link"] {
-  scale: 2.2;
-}
-.cursor[data-state="view"] {
-  scale: 3.6;
-}
-@media (pointer: fine) {
-  html.has-cursor,
-  html.has-cursor a,
-  html.has-cursor button {
-    cursor: none;
   }
 }
 

@@ -4,7 +4,7 @@ import { SectionLink } from "./SectionLink";
 
 export function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" data-theme="dark">
       <FooterMark />
       <div className="footer-bottom label">
         <span>
