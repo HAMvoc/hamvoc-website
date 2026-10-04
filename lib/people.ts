@@ -106,7 +106,7 @@ export function getPeople(): Person[] {
       (a, b) =>
         roleOrder[a.role] - roleOrder[b.role] ||
         cohortOrder(a.cohort) - cohortOrder(b.cohort) ||
-        a.callname.localeCompare(b.callname, "vi"),
+        a.name.localeCompare(b.name, "vi"),
     );
   return cache;
 }
