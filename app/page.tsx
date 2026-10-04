@@ -20,7 +20,11 @@ export default function HomePage() {
       <section className="view-section">
         <div className="eyebrow">{site.name}</div>
         <h1 className="section-headline home-headline">Research begins with curiosity. Opportunity turns it into discovery.</h1>
-        <p className="section-lead">{site.description}</p>
+        <div className="section-lead">
+          {site.description.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
+        </div>
 
         <div className="gallery">
           <figure className="gallery-main">
