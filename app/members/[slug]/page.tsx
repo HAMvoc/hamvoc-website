@@ -29,6 +29,7 @@ const linkLabels: Record<string, string> = {
   email: "Email",
   github: "GitHub",
   scholar: "Google Scholar",
+  orcid: "ORCID",
   researchgate: "ResearchGate",
   linkedin: "LinkedIn",
   website: "Website",
