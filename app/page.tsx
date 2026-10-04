@@ -19,7 +19,7 @@ export default function HomePage() {
     <main>
       <section className="view-section">
         <div className="eyebrow">{site.name}</div>
-        <h1 className="section-headline home-headline">Research born from relentless curiosity.</h1>
+        <h1 className="section-headline home-headline">Research begins with curiosity. Opportunity turns it into discovery.</h1>
         <p className="section-lead">{site.description}</p>
 
         <div className="gallery">
