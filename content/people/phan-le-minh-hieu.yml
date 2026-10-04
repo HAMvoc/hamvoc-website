@@ -4,7 +4,10 @@ callname: "Hiếu"
 aliases: ["Hieu Le Minh Phan", "Hieu Phan", "Hieu Minh Le Phan", "Hieu Phan Le Minh"]
 cohort: "K6"
 major: "Data Science"
-position: 
-research: []
+position: "Data Analyst, Tiger Tribe"
+research:
+  - Algorithmic Trading
+  - AI Applications in Investment and Decision Making
+  - AI Applications in signal processing
 links:
   researchgate: https://www.researchgate.net/profile/Hieu-Phan-54
