@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PaperItem } from "@/components/PaperItem";
 import { site } from "@/content/site";
-import { getAreas, getResearchStats } from "@/lib/papers";
-import { getStats } from "@/lib/people";
+import { getAreas } from "@/lib/papers";
 
 export const metadata: Metadata = {
   title: { absolute: site.name },
@@ -11,18 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const people = getStats();
-  const research = getResearchStats();
   const latest = getAreas()
     .flatMap((a) => a.papers)
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 3);
-
-  const stats = [
-    [people.people, "Members"],
-    [people.cohorts.length, "Cohorts"],
-    [research.papers, "Publications"],
-  ] as const;
 
   return (
     <main>
@@ -30,15 +21,6 @@ export default function HomePage() {
         <div className="eyebrow">{site.name}</div>
         <h1 className="section-headline home-headline">Research born from relentless curiosity.</h1>
         <p className="section-lead">{site.description}</p>
-
-        <dl className="home-stats">
-          {stats.map(([n, label]) => (
-            <div key={label}>
-              <dt>{label}</dt>
-              <dd>{n}</dd>
-            </div>
-          ))}
-        </dl>
 
         <div className="gallery">
           <figure className="gallery-main">

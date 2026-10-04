@@ -244,35 +244,6 @@ main {
   max-width: 14ch;
 }
 
-.home-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px 56px;
-  margin: 8px 0 40px;
-}
-
-.home-stats div {
-  display: flex;
-  flex-direction: column-reverse;
-  gap: 2px;
-}
-
-.home-stats dd {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 2.5rem;
-  line-height: 1;
-  color: var(--c-black);
-}
-
-.home-stats dt {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--c-text-secondary);
-}
-
 .gallery {
   margin-bottom: 64px;
 }
@@ -764,9 +735,6 @@ footer {
   .brand-partner {
     height: 24px;
     padding-left: 8px;
-  }
-  .home-stats dd {
-    font-size: 2rem;
   }
   footer {
     padding: 32px 16px;

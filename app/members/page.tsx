@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Portrait } from "@/components/Portrait";
 import { getPapersBy } from "@/lib/papers";
-import { getGroupedMembers, getPeople } from "@/lib/people";
+import { getGroupedMembers } from "@/lib/people";
 
 export const metadata: Metadata = {
   title: "Members",
@@ -11,22 +11,18 @@ export const metadata: Metadata = {
 
 export default function MembersPage() {
   const groups = getGroupedMembers();
-  const count = getPeople().length;
 
   return (
     <main>
       <section className="view-section">
         <div className="eyebrow">Members</div>
         <h1 className="section-headline">The people of HAMvọc</h1>
-        <p className="section-lead">{count} people, grouped by cohort.</p>
+        <p className="section-lead">Our advisor and students, by cohort.</p>
 
         {groups.map((group) => (
           <div key={group.title} className="cohort-block">
             <div className="cohort-header">
               <h2 className="cohort-title">{group.title}</h2>
-              <span className="cohort-count">
-                {group.members.length} {group.members.length === 1 ? "person" : "people"}
-              </span>
             </div>
 
             <div className={group.isAdvisor ? "advisor-grid" : "members-grid"}>
