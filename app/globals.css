@@ -225,6 +225,10 @@ main {
   margin-bottom: 40px;
 }
 
+.section-lead p + p {
+  margin-top: 1.5em;
+}
+
 .meta-tag {
   font-family: var(--font-mono);
   font-size: 0.75rem;
