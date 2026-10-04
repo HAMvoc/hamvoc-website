@@ -106,6 +106,7 @@ a {
   text-transform: uppercase;
   color: var(--c-black);
   line-height: 1;
+  white-space: nowrap;
 }
 
 .brand-partner {
@@ -238,7 +239,7 @@ main {
 
 /* --- HOME --- */
 .home-headline {
-  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+  font-size: clamp(2.75rem, 6vw, 4.5rem);
   line-height: 1.02;
   letter-spacing: -0.025em;
   max-width: 14ch;
@@ -325,13 +326,13 @@ main {
   gap: 20px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 640px) {
   .members-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (min-width: 1140px) {
+@media (min-width: 1024px) {
   .members-grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -486,7 +487,8 @@ main {
   line-height: 1.4;
 }
 
-@media (max-width: 640px) {
+/* side by side only once the profile column is wide enough */
+@media (max-width: 1023px) {
   .profile-facts {
     grid-auto-flow: row;
   }
@@ -628,6 +630,7 @@ main {
 
 .paper-venue {
   font-family: var(--font-mono);
+  overflow-wrap: anywhere;
   color: var(--c-text-secondary);
 }
 
@@ -692,16 +695,45 @@ footer {
   color: var(--c-text-secondary);
 }
 
-/* --- MOBILE OPTIMIZATIONS (<= 640px down to 390px) --- */
+/* --- RESPONSIVE --- */
+
+/* tablets and small laptops: tighten the gutters and the nav */
+@media (max-width: 900px) {
+  .nav-container {
+    padding: 0 24px;
+  }
+  .nav-links {
+    gap: 4px;
+  }
+  .nav-link {
+    padding: 8px 12px;
+  }
+  .nav-link.active::after {
+    left: 12px;
+    right: 12px;
+  }
+  .view-section {
+    padding: 40px 24px 72px;
+  }
+  footer {
+    padding: 36px 24px;
+  }
+}
+
+/* phones: the nav moves to its own row of tabs under the brand */
 @media (max-width: 640px) {
   .top-nav {
-    height: 60px;
+    height: auto;
   }
   .nav-container {
-    padding: 0 16px;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
   }
   .brand-wrap {
-    gap: 8px;
+    height: 52px;
+    padding: 0 16px;
+    gap: 10px;
   }
   .brand-mark {
     width: 10px;
@@ -710,32 +742,149 @@ footer {
   .brand-title {
     font-size: 1.0625rem;
   }
+  .brand-partner {
+    height: 24px;
+    padding-left: 10px;
+  }
+  .top-nav nav {
+    border-top: 1px solid var(--c-border);
+  }
   .nav-links {
-    gap: 2px;
+    gap: 0;
+  }
+  .nav-links li {
+    flex: 1;
   }
   .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    padding: 0 8px;
     font-size: 0.8125rem;
-    padding: 6px 10px;
-    letter-spacing: 0.02em;
+    border-radius: 0;
   }
   .nav-link.active::after {
-    left: 10px;
-    right: 10px;
+    left: 0;
+    right: 0;
   }
+
   .view-section {
-    padding: 28px 16px 60px;
+    padding: 28px 16px 56px;
+  }
+  .eyebrow {
+    font-size: 0.75rem;
   }
   .section-headline {
-    font-size: 1.75rem;
+    font-size: 1.875rem;
+  }
+  .section-headline.home-headline {
+    font-size: clamp(2.125rem, 10.5vw, 2.75rem);
+  }
+  .section-headline.profile-name {
+    font-size: clamp(1.875rem, 9vw, 2.25rem);
   }
   .section-lead {
     font-size: 1rem;
     margin-bottom: 28px;
   }
-  .brand-partner {
-    height: 24px;
-    padding-left: 8px;
+
+  /* the group photo is 4:3, so show all of it */
+  .gallery {
+    margin: 0 -16px 48px;
   }
+  .gallery-main {
+    aspect-ratio: 4 / 3;
+  }
+
+  .home-section-header {
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 4px;
+  }
+  .home-section-title {
+    font-size: 1.125rem;
+  }
+  .cohort-title {
+    font-size: 1.25rem;
+  }
+  .home-section-link {
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+
+  .cohort-block,
+  .research-group {
+    margin-bottom: 44px;
+  }
+  .cohort-header {
+    margin-bottom: 16px;
+  }
+  .members-grid {
+    gap: 12px;
+  }
+  .member-info {
+    padding: 12px;
+  }
+  .member-name {
+    font-size: 1rem;
+  }
+  .member-role,
+  .member-major {
+    font-size: 0.75rem;
+  }
+
+  /* the advisor card stacks: wide photo on top, details below */
+  .advisor-grid .member-card {
+    grid-template-columns: 1fr;
+  }
+  .advisor-grid .portrait-box {
+    aspect-ratio: 4 / 3;
+  }
+  .advisor-grid .member-info {
+    padding: 16px;
+  }
+  .advisor-grid .member-name {
+    font-size: 1.375rem;
+  }
+  .advisor-grid .member-role {
+    font-size: 0.8125rem;
+  }
+
+  .back-link {
+    margin-bottom: 20px;
+  }
+  .profile {
+    gap: 24px;
+    margin-bottom: 44px;
+  }
+  .profile .portrait-box {
+    aspect-ratio: 4 / 5;
+  }
+  .profile-research li {
+    font-size: 1rem;
+  }
+  .profile-pager {
+    font-size: 0.875rem;
+  }
+  .profile-pager a:last-child {
+    text-align: right;
+  }
+
+  .paper-item {
+    padding: 16px 0;
+  }
+  .paper-title {
+    font-size: 1rem;
+  }
+  .paper-authors {
+    font-size: 0.875rem;
+  }
+  .paper-meta-row {
+    gap: 4px 14px;
+    font-size: 0.75rem;
+  }
+
   footer {
     padding: 32px 16px;
   }
