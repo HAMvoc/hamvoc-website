@@ -5,6 +5,13 @@ aliases: ["Nam Ngoc Vo", "Nam Vo Ngoc"]
 cohort: "K6"
 major: "Artificial Intelligence"
 position:
-research: []
+research: 
+ - Machine Learning
+ - Deep Learning
+ - Computer Vision
+ - Educational Technology
+ - Power Electronics
+ - Medical AI
+
 links:
   researchgate: https://www.researchgate.net/profile/Nam-Vo-41
