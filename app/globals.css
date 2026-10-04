@@ -370,9 +370,6 @@ main {
   height: 100%;
   object-fit: cover;
   object-position: center 25%;
-  filter: none;
-  opacity: 1;
-  mix-blend-mode: normal;
 }
 
 .portrait-initial {
