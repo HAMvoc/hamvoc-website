@@ -567,6 +567,7 @@ main {
   font-weight: 600;
   font-size: 0.9375rem;
   line-height: 1.4;
+  white-space: pre-line;
 }
 
 /* side by side only once the profile column is wide enough */

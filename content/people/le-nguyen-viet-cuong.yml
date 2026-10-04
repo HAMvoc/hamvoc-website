@@ -4,5 +4,15 @@ callname: "Cường"
 aliases: ["Cuong Nguyen Viet Le"]
 cohort: "K5"
 major: "Artificial Intelligence"
-position:
-research: []
+position: |-
+  Tech Lead & AI-Driven Threat Hunter at ChongLuaDao
+  Full-Stack & AI Engineer at CyPeace
+research:
+  - Natural Language Processing (NLP)
+  - AI in Cybersecurity & Online Scam Detection
+  - Agentic RAG
+links:
+  email: lengvietcuong@gmail.com
+  github: https://github.com/lengvietcuong
+  linkedin: https://www.linkedin.com/in/lengvietcuong
+  website: https://vcuong.com

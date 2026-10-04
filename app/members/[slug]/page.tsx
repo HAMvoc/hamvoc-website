@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<"/members/[slug]">)
   const { person } = found;
   return {
     title: person.name,
-    description: [groupLabel(person), person.major, person.position].filter(Boolean).join(" · "),
+    description: [groupLabel(person), person.major, person.position?.replace(/\r?\n+/g, " · ")].filter(Boolean).join(" · "),
   };
 }
 
