@@ -52,6 +52,7 @@ type RawPaper = {
   venue?: string;
   publisher?: string;
   isbn?: string;
+  isbnUrl?: string; 
   award?: string;
   year?: number | string;
   date?: string;
@@ -116,6 +117,7 @@ export function getAreas(): Area[] {
           venue: raw.venue?.trim() ?? "",
           publisher: raw.publisher?.trim() ?? "",
           isbn: raw.isbn ? String(raw.isbn).trim() : "",
+          isbnUrl: raw.isbnUrl?.trim() ?? "",
           award: raw.award?.trim() ?? "",
           year: Number.isFinite(year) && year > 0 ? year : null,
           date,
