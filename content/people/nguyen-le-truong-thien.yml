@@ -5,4 +5,15 @@ aliases: ["Thien Le Truong Nguyen"]
 cohort: "K5"
 major: "Artificial Intelligence"
 position: "AI Engineer, TMA Solutions"
-research: []
+research:
+  - Large Language Models
+  - Machine Learning
+  - Computer Vision
+  - Medical AI
+links:
+  email: ng.t.thien01@gmail.com
+  github: https://github.com/kaiincode
+  orcid: https://orcid.org/0009-0001-3253-6809
+  researchgate: https://www.researchgate.net/profile/Thien-Nguyen-Le-Truong
+  linkedin: https://www.linkedin.com/in/kaiisme
+  website: https://iamkai.vercel.app/
