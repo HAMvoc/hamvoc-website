@@ -43,21 +43,19 @@ Danh sách thành viên lấy từ [trang ResearchGate của lab](https://www.re
 
 ## Thêm paper
 
-Paper nằm trong `content/research/`, **mỗi thư mục là một hướng nghiên cứu**, mỗi paper là một file `.yml` (xem mẫu `content/research/_paper-template.yml`):
+Paper nằm trong `content/research/`, chia đúng 2 thư mục — trang `/research` cũng chia theo 2 mục này:
 
 ```
 content/research/
-  language-and-speech/
-    _area.yml                      tên, mô tả, thứ tự của hướng nghiên cứu
-    streaming-code-switched-asr.yml
-    streaming-code-switched-asr.pdf   (không bắt buộc) đặt PDF cùng tên là site tự đăng và gắn link
+  journal/       bài đăng tạp chí
+  conference/    bài hội nghị
+    tera-rag.yml
+    tera-rag.pdf   (không bắt buộc) đặt PDF cùng tên là site tự đăng và gắn link
 ```
 
-- Thêm hướng nghiên cứu mới = tạo thư mục mới (+ `_area.yml`).
-- `authors` ghi đúng họ tên như trong `content/people/` thì tên đó được gạch chân và link về trang thành viên; paper cũng tự hiện trong mục Papers trên trang của người đó.
-- Trang `/research` liệt kê tất cả paper theo thư mục, mới nhất trước; mục Research ở trang chủ dẫn vào từng hướng.
+Mỗi paper là một file `.yml` (xem mẫu `content/research/_paper-template.yml`). `authors` ghi đúng như trên paper; tên khớp với `name` hoặc `aliases` của thành viên thì được gạch chân, link về trang người đó và tự hiện trong mục Papers trên trang của họ.
 
-Các paper hiện có lấy từ trang ResearchGate của lab, metadata (tác giả, nơi đăng, DOI) đối chiếu qua Crossref.
+Các paper hiện có lấy từ trang ResearchGate của lab và trang publications của thầy, metadata (tác giả, nơi đăng, DOI) đối chiếu qua Crossref.
 
 ## Nội dung chung
 
@@ -81,7 +79,7 @@ Bước build trên Vercel là `npm run build` (khai báo trong `vercel.json`): 
 app/                    route: trang chủ, /research, /people/[slug]
 components/             Hero (lineup chân dung), Roster, PaperList, FitName, …
 content/people/         một file .yml cho mỗi người + photos/
-content/research/       mỗi thư mục một hướng nghiên cứu, mỗi file .yml một paper
+content/research/       journal/ và conference/, mỗi file .yml một paper
 content/site.ts         thông tin chung của lab
 lib/people.ts           đọc và sắp xếp dữ liệu thành viên
 lib/papers.ts           đọc paper, nối tác giả với thành viên

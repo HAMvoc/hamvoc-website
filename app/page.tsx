@@ -19,7 +19,8 @@ export default function Home() {
 
   const groups: { label: string; people: typeof cards }[] = [];
   for (const p of cards) {
-    const label = groupLabel(p) || "Members";
+    // people without a cohort yet share a row, after the cohort rows
+    const label = groupLabel(p) || "K —";
     const g = groups.at(-1);
     if (g?.label === label) g.people.push(p);
     else groups.push({ label, people: [p] });

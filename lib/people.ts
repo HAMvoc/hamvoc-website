@@ -76,6 +76,8 @@ function load(file: string): Person {
 
 const roleOrder: Record<Role, number> = { advisor: 0, member: 1, alumni: 2 };
 const cohortNumber = (c: string) => Number(c.replace(/\D/g, "")) || 0;
+// people without a cohort yet go after every cohort
+const cohortOrder = (c: string) => cohortNumber(c) || Number.MAX_SAFE_INTEGER;
 
 let cache: Person[] | null = null;
 
@@ -87,7 +89,7 @@ export function getPeople(): Person[] {
     .sort(
       (a, b) =>
         roleOrder[a.role] - roleOrder[b.role] ||
-        cohortNumber(a.cohort) - cohortNumber(b.cohort) ||
+        cohortOrder(a.cohort) - cohortOrder(b.cohort) ||
         a.callname.localeCompare(b.callname, "vi"),
     );
   return cache;

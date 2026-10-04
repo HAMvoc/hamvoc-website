@@ -1,96 +1,48 @@
-"use client";
-
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import type { PersonCard } from "@/lib/people";
-import { FitName } from "./FitName";
 
 type Group = { label: string; people: PersonCard[] };
 
 /**
- * Everyone, grouped by cohort. Given names are fitted to the same width so the
- * column reads as one justified block; hovering a row floats their portrait
- * next to the pointer.
+ * Everyone as a portrait, one row per cohort with the advisor on top.
+ * Portraits sit dithered and develop into the photograph on hover.
  */
 export function Roster({ groups }: { groups: Group[] }) {
-  const preview = useRef<HTMLDivElement>(null);
-  const [hovered, setHovered] = useState<PersonCard | null>(null);
-  const [shown, setShown] = useState<PersonCard | null>(null);
-
-  // Pointer-follow with a little lag. Runs only while a row is hovered.
-  useEffect(() => {
-    const el = preview.current;
-    if (!hovered || !el || !matchMedia("(pointer: fine)").matches) return;
-    const pos = { x: lastPointer.x, y: lastPointer.y };
-    let raf = 0;
-    const loop = () => {
-      pos.x += (lastPointer.x - pos.x) * 0.18;
-      pos.y += (lastPointer.y - pos.y) * 0.18;
-      const w = el.offsetWidth;
-      const h = el.offsetHeight;
-      const x = pos.x + 32 + w > innerWidth ? pos.x - 32 - w : pos.x + 32;
-      const y = Math.min(Math.max(pos.y - h / 2, 12), innerHeight - h - 12);
-      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      raf = requestAnimationFrame(loop);
-    };
-    loop();
-    return () => cancelAnimationFrame(raf);
-  }, [hovered]);
-
   return (
-    <div className="roster-list">
+    <div className="cohorts">
       {groups.map((g) => (
-        <div key={g.label} className="roster-group">
-          <h3 className="roster-group-label label">{g.label}</h3>
-          <div className="roster-rows">
-            {g.people.map((p) => (
-              <Link
-                key={p.slug}
-                href={`/people/${p.slug}/`}
-                className="roster-row"
-                onPointerEnter={(e) => {
-                  if (e.pointerType !== "mouse") return;
-                  setHovered(p);
-                  setShown(p);
-                }}
-                onPointerLeave={() => setHovered(null)}
-              >
-                <FitName text={p.callname} className="roster-name" grow={1.9} />
-                <span className="roster-full">{p.name}</span>
-                <span className="roster-meta label">
-                  {p.major && <span>{p.major}</span>}
-                  {p.position && <span>{p.position}</span>}
-                  {p.papers ? <span>{p.papers} {p.papers === 1 ? "paper" : "papers"}</span> : null}
-                </span>
-              </Link>
-            ))}
+        <section key={g.label} className="cohort" aria-label={g.label}>
+          <div className="cohort-head">
+            <h3 className="cohort-label">{g.label}</h3>
+            <p className="cohort-count label">
+              {g.people.length} {g.people.length === 1 ? "person" : "people"}
+            </p>
           </div>
-        </div>
+          <ul className="cohort-grid">
+            {g.people.map((p, i) => (
+              <li key={p.slug} style={{ "--i": i } as CSSProperties}>
+                <Link href={`/people/${p.slug}/`} className="card">
+                  <span className="card-frame">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="card-dither" src={p.images.dither} alt="" width={210} height={280} loading="lazy" />
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="card-photo" src={p.images.sm} alt="" width={480} height={640} loading="lazy" />
+                    <span className="slice-scan" />
+                  </span>
+                  <span className="card-name display">{p.callname}</span>
+                  <span className="card-full">{p.name}</span>
+                  <span className="card-meta label">
+                    {[p.major, p.papers ? `${p.papers} ${p.papers === 1 ? "paper" : "papers"}` : ""]
+                      .filter(Boolean)
+                      .join(" · ")}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       ))}
-
-      <div ref={preview} className="roster-preview" data-on={hovered ? "" : undefined} aria-hidden>
-        {shown && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="preview-dither" src={shown.images.dither} alt="" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img key={shown.slug} className="preview-photo" src={shown.images.sm} alt="" />
-          </>
-        )}
-      </div>
     </div>
-  );
-}
-
-// shared pointer position, so a newly shown preview starts where the pointer is
-const lastPointer = { x: -999, y: -999 };
-if (typeof window !== "undefined") {
-  window.addEventListener(
-    "pointermove",
-    (e) => {
-      lastPointer.x = e.clientX;
-      lastPointer.y = e.clientY;
-    },
-    { passive: true },
   );
 }
