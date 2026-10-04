@@ -21,7 +21,7 @@ export type Person = {
   /** `position: none` — not working at the moment, so the field is left off */
   noPosition: boolean;
   research: string[];
-  links: Partial<Record<"email" | "github" | "scholar" | "researchgate" | "linkedin" | "website", string>>;
+  links: Partial<Record<"email" | "github" | "scholar" | "orcid" | "researchgate" | "linkedin" | "website", string>>;
   images: { lg: string; sm: string; dither: string };
   hasRealPhoto: boolean;
 };
