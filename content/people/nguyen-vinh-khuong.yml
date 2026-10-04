@@ -2,7 +2,7 @@
 name: Nguyễn Vĩnh Khương
 role: advisor
 aliases: ["Khuong Nguyen-Vinh", "Khuong Vinh Nguyen"]
-major: 
+major: none
 position: Lecturer in Electrical and Electronic Engineering, RMIT University, Ho Chi Minh City, Vietnam
 research:
   - Electrical circuits and systems
@@ -10,4 +10,8 @@ research:
   - Power electronics
   - Deep Learning and Neural networks
 links:
+  website: https://www.rmit.edu.vn/profiles/n/khuong-nguyenvinh
+  email: khuong.nguyenvinh@rmit.edu.vn
+  linkedin: https://www.linkedin.com/in/khuong-nguyen-vinh-ph-d-b93772127/
+  orcid: https://orcid.org/0000-0002-1738-5109
   researchgate: https://www.researchgate.net/profile/Khuong-Nguyen-Vinh-2
