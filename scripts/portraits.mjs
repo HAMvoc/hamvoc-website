@@ -71,7 +71,7 @@ function atkinson(gray, w, h) {
 
 async function writeOutputs(slug, input) {
   // `input` is a 1200×1600 greyscale image (any sharp input)
-  const base = sharp(input).grayscale();
+  const base = sharp(input);
   const lg = await base.clone().resize(960, 1280).jpeg({ quality: 80, mozjpeg: true }).toBuffer();
   await sharp(lg).toFile(path.join(outDir, `${slug}.jpg`));
   await sharp(lg)
@@ -81,6 +81,7 @@ async function writeOutputs(slug, input) {
 
   const { data } = await sharp(lg)
     .resize(DITHER_W, DITHER_H, { kernel: "lanczos3" })
+    .grayscale()
     .linear(1.15, -14) // a little more contrast so faces survive 1 bit
     .extractChannel(0)
     .raw()
