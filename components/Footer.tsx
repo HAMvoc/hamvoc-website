@@ -1,11 +1,11 @@
 import { site } from "@/content/site";
-import { FooterMark } from "./FooterMark";
+import { BigWordmark } from "./BigWordmark";
 import { SectionLink } from "./SectionLink";
 
 export function Footer() {
   return (
     <footer className="site-footer">
-      <FooterMark />
+      <BigWordmark className="footer-mark" />
       <div className="footer-bottom label">
         <span>
           © {new Date().getFullYear()} <span className="nocase">{site.name}</span>

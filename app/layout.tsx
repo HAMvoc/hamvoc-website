@@ -3,7 +3,6 @@ import { Archivo, IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { site } from "@/content/site";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
-import { SmoothScroll } from "@/components/SmoothScroll";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -36,9 +35,8 @@ export const viewport: Viewport = {
   themeColor: "#f1f1f1",
 };
 
-// Runs before first paint: marks JS as available and decides whether the
-// home page plays its intro (once per session, never with reduced motion).
-const boot = `(function(){var d=document.documentElement;d.classList.add('js');try{if(location.pathname==='/'&&!sessionStorage.getItem('hv-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)d.setAttribute('data-intro','')}catch(e){}})()`;
+// Runs before first paint: marks JS as available.
+const boot = `document.documentElement.classList.add('js')`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -54,7 +52,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
-        <SmoothScroll />
       </body>
     </html>
   );

@@ -43,3 +43,5 @@ next-env.d.ts
 # generated portraits (scripts/portraits.mjs)
 /public/people/
 /public/papers/
+/public/group.jpg
+/public/group-dither.png

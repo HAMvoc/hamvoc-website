@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { smooth } from "@/lib/lenis";
 
 const trim = (p: string) => p.replace(/\/+$/, "") || "/";
 
@@ -39,9 +38,8 @@ export function SectionLink({
         const target = hash === "top" ? 0 : document.getElementById(hash);
         if (target === null) return;
         e.preventDefault();
-        if (smooth.lenis) smooth.lenis.scrollTo(target, { duration: 1.6 });
-        else if (target === 0) window.scrollTo({ top: 0 });
-        else target.scrollIntoView();
+        if (target === 0) window.scrollTo({ top: 0, behavior: "smooth" });
+        else target.scrollIntoView({ behavior: "smooth" });
         if (hash !== "top") history.replaceState(history.state, "", `#${hash}`);
       }}
     >

@@ -1,5 +1,3 @@
-import { ScrubText } from "./ScrubText";
-
 /** The lab's name, set as a dictionary entry — it is a real Vietnamese word. */
 export function Definition({ count, from, to }: { count: number; from?: string; to?: string }) {
   const span = from && to && from !== to ? `, from ${from} to ${to}` : "";
@@ -13,14 +11,10 @@ export function Definition({ count, from, to }: { count: number; from?: string; 
       </div>
       <ol className="definition-senses">
         <li>
-          <ScrubText>
-            To be unable to leave a thing alone — to poke at it, take it apart and put it back together until it
-            makes sense.
-          </ScrubText>
+          To be unable to leave a thing alone — to poke at it, take it apart and put it back together until it makes
+          sense.
         </li>
-        <li>
-          <ScrubText>{`A student research lab that works this way: ${count} people${span}, each poking at one stubborn problem.`}</ScrubText>
-        </li>
+        <li>{`A student research lab that works this way: ${count} people${span}, each poking at one stubborn problem.`}</li>
       </ol>
     </section>
   );

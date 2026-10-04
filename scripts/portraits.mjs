@@ -1,4 +1,4 @@
-// Turns member photos into the three images the site uses:
+// Turns member photos (and the lab group photo, see below) into the images the site uses:
 //   public/people/<slug>.jpg          960×1280 greyscale, for the hero and member pages (one file,
 //                                               so the hero → member page morph lands on a cached image)
 //   public/people/<slug>-sm.jpg       480×640  greyscale, for hover previews
@@ -270,6 +270,122 @@ async function fromPlaceholder(slug) {
   return sharp(art).composite([{ input: grain, blend: "soft-light" }]).grayscale().toBuffer();
 }
 
+// ---------- group photo ----------
+//   content/group-photo.(jpg|png|webp)  →  public/group.jpg (1920 wide, its own aspect ratio)
+//                                        + public/group-dither.png (480 wide)
+// Without a photo, a placeholder is drawn: the lab as dark figures in two rows.
+
+const GROUP_W = 1920;
+const GROUP_H = 1080;
+
+function groupSilhouette(slugs) {
+  const n = Math.max(slugs.length, 1);
+  const back = slugs.slice(0, Math.ceil(n / 2));
+  const front = slugs.slice(Math.ceil(n / 2));
+  const figure = (slug, cx, baseY, s, tone) => {
+    const r = rng(hash(slug));
+    const headRx = (58 + r() * 10) * s;
+    const headRy = headRx * 1.3;
+    const headY = baseY - 330 * s;
+    const sw = (150 + r() * 30) * s;
+    const shoulderY = headY + headRy + 60 * s;
+    const hairDrop = r() < 0.35 ? headRy * 1.1 : 0; // some with longer hair falling past the ears
+    return `<g>
+      <path d="M ${cx - sw - 20 * s} ${GROUP_H + 20}
+        L ${cx - sw} ${shoulderY + 60 * s}
+        C ${cx - sw + 6 * s} ${shoulderY}, ${cx - sw * 0.6} ${shoulderY - 20 * s}, ${cx - headRx * 0.6} ${shoulderY - 26 * s}
+        L ${cx + headRx * 0.6} ${shoulderY - 26 * s}
+        C ${cx + sw * 0.6} ${shoulderY - 20 * s}, ${cx + sw - 6 * s} ${shoulderY}, ${cx + sw} ${shoulderY + 60 * s}
+        L ${cx + sw + 20 * s} ${GROUP_H + 20} Z" fill="${tone.body}"/>
+      <rect x="${cx - headRx * 0.45}" y="${headY + headRy * 0.6}" width="${headRx * 0.9}" height="${shoulderY - headY - headRy * 0.4}" rx="${headRx * 0.3}" fill="${tone.neck}"/>
+      <ellipse cx="${cx}" cy="${headY}" rx="${headRx}" ry="${headRy}" fill="url(#face)"/>
+      <path d="M ${cx - headRx * 1.07} ${headY - headRy * 0.12}
+        A ${headRx * 1.07} ${headRy * 1.04} 0 0 1 ${cx + headRx * 1.07} ${headY - headRy * 0.12}
+        L ${cx + headRx * 1.07} ${headY - headRy * 0.12 + hairDrop}
+        L ${cx + headRx * 0.85} ${headY - headRy * 0.12 + hairDrop}
+        L ${cx + headRx * 0.85} ${headY - headRy * 0.2}
+        L ${cx - headRx * 0.85} ${headY - headRy * 0.2}
+        L ${cx - headRx * 0.85} ${headY - headRy * 0.12 + hairDrop}
+        L ${cx - headRx * 1.07} ${headY - headRy * 0.12 + hairDrop} Z" fill="${tone.hair}"/>
+    </g>`;
+  };
+  const row = (list, baseY, s, tone, inset) =>
+    list
+      .map((slug, i) => {
+        const span = GROUP_W - inset * 2;
+        const cx = inset + (span * (i + 0.5)) / list.length;
+        return figure(slug, cx, baseY, s, tone);
+      })
+      .join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${GROUP_W}" height="${GROUP_H}" viewBox="0 0 ${GROUP_W} ${GROUP_H}">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#8c8c8c"/>
+      <stop offset="0.45" stop-color="#4a4a4a"/>
+      <stop offset="1" stop-color="#121212"/>
+    </radialGradient>
+    <radialGradient id="face" cx="35%" cy="35%" r="85%">
+      <stop offset="0" stop-color="#9a9a9a"/>
+      <stop offset="0.5" stop-color="#4a4a4a"/>
+      <stop offset="1" stop-color="#161616"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="far"><feGaussianBlur stdDeviation="4.5"/></filter>
+  </defs>
+  <rect width="${GROUP_W}" height="${GROUP_H}" fill="url(#bg)"/>
+  <g filter="url(#far)" opacity="0.92">${row(back, 760, 1.0, { body: "#262626", neck: "#202020", hair: "#111" }, 260)}</g>
+  <g filter="url(#soft)">${row(front, 1010, 1.25, { body: "#141414", neck: "#1c1c1c", hair: "#0a0a0a" }, 140)}</g>
+</svg>`;
+}
+
+async function group(slugs, scriptTime) {
+  const src = ["jpg", "jpeg", "png", "webp", "JPG", "PNG"]
+    .map((e) => path.join(root, `content/group-photo.${e}`))
+    .find((p) => existsSync(p));
+  const outJpg = path.join(root, "public/group.jpg");
+  const outDither = path.join(root, "public/group-dither.png");
+  const sourceTime = Math.max(scriptTime, src ? await mtime(src) : 0);
+  const outTimes = await Promise.all([outJpg, outDither].map(mtime));
+  // the placeholder depends on who is in the lab, so redraw it whenever the people change
+  const peopleTime = Math.max(...(await Promise.all(slugs.map((s) => mtime(path.join(peopleDir, `${s}.yml`))))));
+  if (!force && outTimes.every((t) => t > Math.max(sourceTime, src ? 0 : peopleTime))) return;
+
+  let base;
+  if (src) {
+    // keep the photo's own framing — cropping a group shot loses heads
+    base = await sharp(src)
+      .rotate()
+      .resize({ width: GROUP_W, withoutEnlargement: true })
+      .grayscale()
+      .normalise({ lower: 1, upper: 99 })
+      .toBuffer();
+  } else {
+    const art = await sharp(Buffer.from(groupSilhouette(slugs))).grayscale().png().toBuffer();
+    const grain = await sharp({
+      create: { width: GROUP_W, height: GROUP_H, channels: 3, noise: { type: "gaussian", mean: 128, sigma: 12 } },
+    })
+      .grayscale()
+      .png()
+      .toBuffer();
+    base = await sharp(art).composite([{ input: grain, blend: "soft-light" }]).grayscale().toBuffer();
+  }
+  await sharp(base).grayscale().jpeg({ quality: 80, mozjpeg: true }).toFile(outJpg);
+  const { width: bw, height: bh } = await sharp(base).metadata();
+  const DW = 480;
+  const DH = Math.round((DW * bh) / bw);
+  const { data } = await sharp(base)
+    .grayscale()
+    .resize(DW, DH, { kernel: "lanczos3" })
+    .linear(1.15, -14)
+    .extractChannel(0)
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  await sharp(atkinson(data, DW, DH), { raw: { width: DW, height: DH, channels: 1 } })
+    .png({ compressionLevel: 9, palette: true, colors: 2 })
+    .toFile(outDither);
+  console.log(`portraits: group photo ${src ? "(photo)" : "(placeholder)"}`);
+}
+
 // ---------- main ----------
 
 async function main() {
@@ -292,6 +408,7 @@ async function main() {
     console.log(`portraits: ${slug} ${photo ? "(photo)" : "(placeholder)"}`);
   }
   console.log(`portraits: ${made} updated, ${files.length - made} up to date`);
+  await group(files.map((f) => f.replace(/.yml$/, "")), scriptTime);
 }
 
 main().catch((err) => {

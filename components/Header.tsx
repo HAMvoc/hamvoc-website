@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { site } from "@/content/site";
-import { Clock } from "./Clock";
 import { HeaderShell } from "./HeaderShell";
 import { SectionLink } from "./SectionLink";
 import { Wordmark } from "./Wordmark";
@@ -8,9 +7,19 @@ import { Wordmark } from "./Wordmark";
 export function Header() {
   return (
     <HeaderShell>
-      <Link href="/" aria-label={`${site.name} — home`}>
-        <Wordmark />
-      </Link>
+      <div className="site-brand">
+        <Link href="/" aria-label={`${site.name} — home`}>
+          <Wordmark />
+        </Link>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="site-partner"
+          src="/swinburne.webp"
+          alt="Swinburne University of Technology"
+          width={1200}
+          height={608}
+        />
+      </div>
       <nav className="site-nav" aria-label="Sections">
         <SectionLink className="link-u" href="/#people">
           People
@@ -19,10 +28,6 @@ export function Header() {
           Research
         </Link>
       </nav>
-      <p className="site-clock">
-        <span>{site.place}</span>
-        <Clock />
-      </p>
     </HeaderShell>
   );
 }

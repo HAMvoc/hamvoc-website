@@ -33,7 +33,13 @@ export default function Home() {
       default="none"
     >
       <main>
-        <Hero people={cards} />
+        <Hero
+          facts={[
+            `${stats.people} people`,
+            stats.cohorts.length > 1 ? `${stats.cohorts[0]}–${stats.cohorts.at(-1)}` : stats.cohorts[0] ?? "",
+            `${getResearchStats().papers} papers`,
+          ].filter(Boolean)}
+        />
         <Definition count={stats.people} from={stats.cohorts[0]} to={stats.cohorts.at(-1)} />
         <section id="people" className="roster" aria-labelledby="people-title">
           <div className="section-head">
