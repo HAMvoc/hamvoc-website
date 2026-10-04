@@ -95,7 +95,6 @@ async function fromPhoto(photo) {
   return sharp(photo)
     .rotate()
     .resize(1200, 1600, { fit: "cover", position: sharp.strategy.attention })
-    .grayscale()
     .normalise({ lower: 1, upper: 99 })
     .linear(1.06, -6)
     .toBuffer();
