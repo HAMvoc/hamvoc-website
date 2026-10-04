@@ -45,12 +45,6 @@ export default function HomePage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/group.jpg" alt={`The members of ${site.name}`} width={1920} height={1440} fetchPriority="high" />
           </figure>
-          <div className="gallery-slot" aria-hidden>
-            Photo coming soon
-          </div>
-          <div className="gallery-slot" aria-hidden>
-            Photo coming soon
-          </div>
         </div>
 
         <div className="home-section-header">
