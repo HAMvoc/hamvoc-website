@@ -18,6 +18,8 @@ export type Person = {
   cohort: string;
   major: string;
   position: string;
+  /** `position: none` — not working at the moment, so the field is left off */
+  noPosition: boolean;
   research: string[];
   links: Partial<Record<"email" | "github" | "scholar" | "researchgate" | "linkedin" | "website", string>>;
   images: { lg: string; sm: string; dither: string };
@@ -75,7 +77,8 @@ function load(file: string): Person {
     role,
     cohort,
     major: raw.major?.trim() ?? "",
-    position: raw.position?.trim() ?? "",
+    position: /^none$/i.test(raw.position?.trim() ?? "") ? "" : (raw.position?.trim() ?? ""),
+    noPosition: /^none$/i.test(raw.position?.trim() ?? ""),
     research: list(raw.research),
     links: Object.fromEntries(Object.entries(raw.links ?? {}).filter(([, v]) => v)),
     images: {

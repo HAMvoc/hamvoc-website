@@ -8,7 +8,7 @@ callname: Văn A              # optional — what people call you. Defaults to t
 aliases: [Van A Nguyen]      # optional — how your name is spelled on papers, so they link to your page
 cohort: K20                  # "K mấy"
 major: Computer Science
-position: ML Engineer, Example Company   # current position
+position: ML Engineer, Example Company   # current position — write `none` if you are not working
 research:                    # be specific. Not "AI" or "ML" — what exactly are you poking at?
   - First research interest, one or two sentences.
   - Second research interest.

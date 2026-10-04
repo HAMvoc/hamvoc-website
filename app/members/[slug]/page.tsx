@@ -43,11 +43,11 @@ export default async function MemberPage({ params }: PageProps<"/members/[slug]"
   const links = Object.entries(p.links).filter(([, v]) => v);
 
   // the profile fields every member page shows, filled in or not
-  const facts: [string, string][] = [
+  const facts = [
     [p.role === "advisor" ? "Role" : "Cohort", groupLabel(p)],
     ["Major", p.major],
-    ["Current position", p.position],
-  ];
+    ...(p.noPosition ? [] : [["Current position", p.position]]),
+  ] as [string, string][];
 
   return (
     <main>
