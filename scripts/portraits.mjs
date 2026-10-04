@@ -271,7 +271,7 @@ async function fromPlaceholder(slug) {
 }
 
 // ---------- group photo ----------
-//   content/group-photo.(jpg|png|webp)  →  public/group.jpg (1920 wide, its own aspect ratio)
+//   content/group-photo.(jpg|png|webp)  →  public/group.jpg (1920 wide, colour, its own aspect ratio)
 //                                        + public/group-dither.png (480 wide)
 // Without a photo, a placeholder is drawn: the lab as dark figures in two rows.
 
@@ -356,8 +356,6 @@ async function group(slugs, scriptTime) {
     base = await sharp(src)
       .rotate()
       .resize({ width: GROUP_W, withoutEnlargement: true })
-      .grayscale()
-      .normalise({ lower: 1, upper: 99 })
       .toBuffer();
   } else {
     const art = await sharp(Buffer.from(groupSilhouette(slugs))).grayscale().png().toBuffer();
@@ -369,7 +367,8 @@ async function group(slugs, scriptTime) {
       .toBuffer();
     base = await sharp(art).composite([{ input: grain, blend: "soft-light" }]).grayscale().toBuffer();
   }
-  await sharp(base).grayscale().jpeg({ quality: 80, mozjpeg: true }).toFile(outJpg);
+  // the photo keeps its colour; only the dither it develops from is black and white
+  await sharp(base).jpeg({ quality: 82, mozjpeg: true }).toFile(outJpg);
   const { width: bw, height: bh } = await sharp(base).metadata();
   const DW = 480;
   const DH = Math.round((DW * bh) / bw);
