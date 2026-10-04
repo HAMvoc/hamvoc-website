@@ -16,6 +16,7 @@ export type Paper = {
   publisher: string;
   /** for proceedings that have an ISBN but no DOI */
   isbn: string;
+  isbnUrl: string;
   /** e.g. a best-paper award */
   award: string;
   year: number | null;
