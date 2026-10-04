@@ -1,33 +1,47 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { site } from "@/content/site";
-import { HeaderShell } from "./HeaderShell";
-import { SectionLink } from "./SectionLink";
-import { Wordmark } from "./Wordmark";
 
 export function Header() {
+  const pathname = usePathname();
+
+  const isHome = pathname === "/" || pathname === "";
+  const isMembers = pathname.startsWith("/members");
+  const isResearch = pathname.startsWith("/research");
+
   return (
-    <HeaderShell>
-      <div className="site-brand">
-        <Link href="/" aria-label={`${site.name} — home`}>
-          <Wordmark />
-        </Link>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          className="site-partner"
-          src="/swinburne.webp"
-          alt="Swinburne University of Technology"
-          width={1200}
-          height={608}
-        />
+    <header className="top-nav">
+      <div className="nav-container">
+        <div className="brand-wrap">
+          <span className="brand-mark" aria-hidden="true" />
+          <Link href="/" className="brand-title">
+            {site.name}
+          </Link>
+          <span className="brand-tag">{site.place}</span>
+        </div>
+
+        <nav aria-label="Main Navigation">
+          <ul className="nav-links">
+            <li>
+              <Link href="/" className={`nav-link ${isHome ? "active" : ""}`}>
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link href="/members/" className={`nav-link ${isMembers ? "active" : ""}`}>
+                Members
+              </Link>
+            </li>
+            <li>
+              <Link href="/research/" className={`nav-link ${isResearch ? "active" : ""}`}>
+                Research
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
-      <nav className="site-nav" aria-label="Sections">
-        <SectionLink className="link-u" href="/#people">
-          People
-        </SectionLink>
-        <Link className="link-u" href="/research/">
-          Research
-        </Link>
-      </nav>
-    </HeaderShell>
+    </header>
   );
 }

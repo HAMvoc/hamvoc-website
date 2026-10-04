@@ -2,18 +2,35 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="member" style={{ minHeight: "80svh", display: "grid", alignContent: "center" }}>
-      <p className="label" style={{ color: "var(--color-smoke)" }}>
-        404
-      </p>
-      <h1 className="definition-word" style={{ marginTop: 16 }}>
-        Nothing here to poke at.
-      </h1>
-      <p className="label" style={{ marginTop: 32 }}>
-        <Link className="link-u" href="/">
-          ← Back to the lab
+    <main>
+      <section
+        className="view-section"
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "flex-start",
+        }}
+      >
+        <div className="eyebrow">[404 // NOT FOUND]</div>
+        <h1 className="section-headline">Nothing here to poke at.</h1>
+        <p className="section-lead" style={{ marginBottom: "28px" }}>
+          The page you are looking for does not exist or has been moved.
+        </p>
+        <Link
+          href="/"
+          className="meta-tag"
+          style={{
+            color: "var(--c-red)",
+            borderColor: "var(--c-red)",
+            backgroundColor: "var(--c-red-tint)",
+            padding: "8px 16px",
+          }}
+        >
+          ← Back to Home
         </Link>
-      </p>
+      </section>
     </main>
   );
 }

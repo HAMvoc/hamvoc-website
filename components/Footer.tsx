@@ -1,22 +1,32 @@
 import { site } from "@/content/site";
-import { BigWordmark } from "./BigWordmark";
-import { SectionLink } from "./SectionLink";
 
 export function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="site-footer">
-      <BigWordmark className="footer-mark" />
-      <div className="footer-bottom label">
-        <span>
-          © {new Date().getFullYear()} <span className="nocase">{site.name}</span>
-        </span>
-        <span>{site.place}</span>
-        <a className="link-u" href={site.github} target="_blank" rel="noreferrer">
-          GitHub ↗
-        </a>
-        <SectionLink className="link-u" href="#top">
-          Back to top
-        </SectionLink>
+    <footer>
+      <div className="footer-inner">
+        <div className="footer-left">
+          <div className="footer-brand">{site.name}</div>
+          <div className="footer-desc">{site.description}</div>
+        </div>
+        <div className="footer-right">
+          <div className="footer-badge">
+            <span className="footer-dot" aria-hidden="true" />
+            <span>{site.place}</span>
+          </div>
+          {site.github && (
+            <a
+              href={site.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+            >
+              GitHub ↗
+            </a>
+          )}
+          <span>© {year} {site.name}</span>
+        </div>
       </div>
     </footer>
   );

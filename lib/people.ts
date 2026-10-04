@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { parse } from "yaml";
 
@@ -9,27 +9,31 @@ export type Role = "advisor" | "member" | "alumni";
 export type Person = {
   slug: string;
   name: string;
-  /** What people call them — the given name, set large. */
+  /** What people call them — the given name. */
   callname: string;
   /** Other spellings of the name used on papers, for matching authors. */
   aliases: string[];
   role: Role;
-  /** e.g. "K19"; empty for advisors or when not filled in yet */
+  /** e.g. "K6", "K5"; empty for advisors or when not filled in yet */
   cohort: string;
   major: string;
   position: string;
   research: string[];
   links: Partial<Record<"email" | "github" | "scholar" | "researchgate" | "linkedin" | "website", string>>;
   images: { lg: string; sm: string; dither: string };
+  hasRealPhoto: boolean;
 };
 
-/** The bits client components need — keeps research text out of the hero bundle. */
-export type PersonCard = Pick<
-  Person,
-  "slug" | "name" | "callname" | "role" | "cohort" | "major" | "position" | "images"
-> & { papers?: number };
+export type MemberGroup = {
+  title: string;
+  badge: string;
+  countLabel: string;
+  isAdvisor?: boolean;
+  members: Person[];
+};
 
 const dir = path.join(process.cwd(), "content/people");
+const photoDir = path.join(dir, "photos");
 
 type Raw = {
   name?: string;
@@ -45,6 +49,15 @@ type Raw = {
 
 const list = (v: string[] | string | undefined) =>
   (Array.isArray(v) ? v : v ? [v] : []).map((s) => String(s).trim()).filter(Boolean);
+
+export function hasRealPhoto(slug: string): boolean {
+  for (const ext of ["jpg", "jpeg", "png", "webp", "JPG", "JPEG", "PNG"]) {
+    if (existsSync(path.join(photoDir, `${slug}.${ext}`))) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function load(file: string): Person {
   const slug = file.replace(/\.yml$/, "");
@@ -71,13 +84,12 @@ function load(file: string): Person {
       sm: `/people/${slug}-sm.jpg`,
       dither: `/people/${slug}-dither.png`,
     },
+    hasRealPhoto: hasRealPhoto(slug),
   };
 }
 
 const roleOrder: Record<Role, number> = { advisor: 0, member: 1, alumni: 2 };
 const cohortNumber = (c: string) => Number(c.replace(/\D/g, "")) || 0;
-// people without a cohort yet go after every cohort
-const cohortOrder = (c: string) => cohortNumber(c) || Number.MAX_SAFE_INTEGER;
 
 let cache: Person[] | null = null;
 
@@ -89,7 +101,7 @@ export function getPeople(): Person[] {
     .sort(
       (a, b) =>
         roleOrder[a.role] - roleOrder[b.role] ||
-        cohortOrder(a.cohort) - cohortOrder(b.cohort) ||
+        cohortNumber(b.cohort) - cohortNumber(a.cohort) ||
         a.callname.localeCompare(b.callname, "vi"),
     );
   return cache;
@@ -108,9 +120,61 @@ export function getPerson(slug: string) {
   };
 }
 
-export function toCard(p: Person, papers?: number): PersonCard {
-  const { slug, name, callname, role, cohort, major, position, images } = p;
-  return { slug, name, callname, role, cohort, major, position, images, papers };
+export function getGroupedMembers(): MemberGroup[] {
+  const people = getPeople();
+  const advisors = people.filter((p) => p.role === "advisor");
+  const members = people.filter((p) => p.role !== "advisor");
+
+  const groups: MemberGroup[] = [];
+
+  if (advisors.length > 0) {
+    groups.push({
+      title: "Advisors",
+      badge: "FACULTY ADVISOR",
+      countLabel: `${String(advisors.length).padStart(2, "0")} Advisor${advisors.length > 1 ? "s" : ""}`,
+      isAdvisor: true,
+      members: advisors,
+    });
+  }
+
+  // Check if members have cohort specified
+  const cohortMap = new Map<string, Person[]>();
+  const noCohort: Person[] = [];
+
+  for (const m of members) {
+    if (m.cohort) {
+      const existing = cohortMap.get(m.cohort) ?? [];
+      existing.push(m);
+      cohortMap.set(m.cohort, existing);
+    } else {
+      noCohort.push(m);
+    }
+  }
+
+  // Sort cohorts newest first
+  const sortedCohorts = Array.from(cohortMap.entries()).sort(
+    ([cA], [cB]) => cohortNumber(cB) - cohortNumber(cA),
+  );
+
+  for (const [cohort, cohortMembers] of sortedCohorts) {
+    groups.push({
+      title: `Cohort ${cohort}`,
+      badge: `COHORT ${cohort.toUpperCase()}`,
+      countLabel: `${String(cohortMembers.length).padStart(2, "0")} Member${cohortMembers.length > 1 ? "s" : ""}`,
+      members: cohortMembers,
+    });
+  }
+
+  if (noCohort.length > 0) {
+    groups.push({
+      title: "Members",
+      badge: "RESEARCH MEMBERS",
+      countLabel: `${String(noCohort.length).padStart(2, "0")} Member${noCohort.length > 1 ? "s" : ""}`,
+      members: noCohort,
+    });
+  }
+
+  return groups;
 }
 
 export function getStats() {
