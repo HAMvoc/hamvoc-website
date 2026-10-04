@@ -6,7 +6,7 @@ import { getAreas } from "@/lib/papers";
 
 export const metadata: Metadata = {
   title: { absolute: site.name },
-  description: site.description,
+  description: site.description.join(" "),
 };
 
 export default function HomePage() {
