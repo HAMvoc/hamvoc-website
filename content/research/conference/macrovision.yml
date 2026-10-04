@@ -1,6 +1,7 @@
 title: "MacroVision: A Two-Stage Localization and Fine-Grained Classification Pipeline for High-Cardinality Food Ingredient Recognition"
 authors: ["Vinh Khai Han", "Ngan Bui Thanh Pham", "Minh Anh Hoang"]
 venue: "JCSSE 2026"
+publisher: "IEEE"
 date: "2026-06-24"
 links:
   doi: https://doi.org/10.1109/jcsse68839.2026.11596987

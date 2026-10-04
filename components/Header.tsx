@@ -4,12 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/content/site";
 
+const links = [
+  ["/", "Home"],
+  ["/members/", "Members"],
+  ["/research/", "Research"],
+] as const;
+
 export function Header() {
   const pathname = usePathname();
-
-  const isHome = pathname === "/" || pathname === "";
-  const isMembers = pathname.startsWith("/members");
-  const isResearch = pathname.startsWith("/research");
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href.slice(0, -1)));
 
   return (
     <header className="top-nav">
@@ -19,26 +22,25 @@ export function Header() {
           <Link href="/" className="brand-title">
             {site.name}
           </Link>
-          <span className="brand-tag">{site.place}</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="brand-partner"
+            src="/swinburne.webp"
+            alt="Swinburne University of Technology"
+            width={1200}
+            height={608}
+          />
         </div>
 
         <nav aria-label="Main Navigation">
           <ul className="nav-links">
-            <li>
-              <Link href="/" className={`nav-link ${isHome ? "active" : ""}`}>
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link href="/members/" className={`nav-link ${isMembers ? "active" : ""}`}>
-                Members
-              </Link>
-            </li>
-            <li>
-              <Link href="/research/" className={`nav-link ${isResearch ? "active" : ""}`}>
-                Research
-              </Link>
-            </li>
+            {links.map(([href, label]) => (
+              <li key={href}>
+                <Link href={href} className={`nav-link${isActive(href) ? " active" : ""}`}>
+                  {label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
       </div>

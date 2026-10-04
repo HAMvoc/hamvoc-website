@@ -25,9 +25,8 @@ export type Person = {
 };
 
 export type MemberGroup = {
+  /** "Advisor", a cohort such as "K5", or "Members" for anyone without one */
   title: string;
-  badge: string;
-  countLabel: string;
   isAdvisor?: boolean;
   members: Person[];
 };
@@ -90,6 +89,8 @@ function load(file: string): Person {
 
 const roleOrder: Record<Role, number> = { advisor: 0, member: 1, alumni: 2 };
 const cohortNumber = (c: string) => Number(c.replace(/\D/g, "")) || 0;
+// people without a cohort yet go after every cohort
+const cohortOrder = (c: string) => cohortNumber(c) || Number.MAX_SAFE_INTEGER;
 
 let cache: Person[] | null = null;
 
@@ -101,7 +102,7 @@ export function getPeople(): Person[] {
     .sort(
       (a, b) =>
         roleOrder[a.role] - roleOrder[b.role] ||
-        cohortNumber(b.cohort) - cohortNumber(a.cohort) ||
+        cohortOrder(a.cohort) - cohortOrder(b.cohort) ||
         a.callname.localeCompare(b.callname, "vi"),
     );
   return cache;
@@ -120,60 +121,21 @@ export function getPerson(slug: string) {
   };
 }
 
+/** Advisor first, then one group per cohort (K4, K5, …), then anyone without a cohort. */
 export function getGroupedMembers(): MemberGroup[] {
   const people = getPeople();
-  const advisors = people.filter((p) => p.role === "advisor");
-  const members = people.filter((p) => p.role !== "advisor");
-
   const groups: MemberGroup[] = [];
+  const advisors = people.filter((p) => p.role === "advisor");
+  if (advisors.length) groups.push({ title: advisors.length > 1 ? "Advisors" : "Advisor", isAdvisor: true, members: advisors });
 
-  if (advisors.length > 0) {
-    groups.push({
-      title: "Advisors",
-      badge: "FACULTY ADVISOR",
-      countLabel: `${String(advisors.length).padStart(2, "0")} Advisor${advisors.length > 1 ? "s" : ""}`,
-      isAdvisor: true,
-      members: advisors,
-    });
+  const byCohort = new Map<string, Person[]>();
+  for (const p of people) {
+    if (p.role === "advisor") continue;
+    const key = p.cohort || "Members";
+    byCohort.set(key, [...(byCohort.get(key) ?? []), p]);
   }
-
-  // Check if members have cohort specified
-  const cohortMap = new Map<string, Person[]>();
-  const noCohort: Person[] = [];
-
-  for (const m of members) {
-    if (m.cohort) {
-      const existing = cohortMap.get(m.cohort) ?? [];
-      existing.push(m);
-      cohortMap.set(m.cohort, existing);
-    } else {
-      noCohort.push(m);
-    }
-  }
-
-  // Sort cohorts newest first
-  const sortedCohorts = Array.from(cohortMap.entries()).sort(
-    ([cA], [cB]) => cohortNumber(cB) - cohortNumber(cA),
-  );
-
-  for (const [cohort, cohortMembers] of sortedCohorts) {
-    groups.push({
-      title: `Cohort ${cohort}`,
-      badge: `COHORT ${cohort.toUpperCase()}`,
-      countLabel: `${String(cohortMembers.length).padStart(2, "0")} Member${cohortMembers.length > 1 ? "s" : ""}`,
-      members: cohortMembers,
-    });
-  }
-
-  if (noCohort.length > 0) {
-    groups.push({
-      title: "Members",
-      badge: "RESEARCH MEMBERS",
-      countLabel: `${String(noCohort.length).padStart(2, "0")} Member${noCohort.length > 1 ? "s" : ""}`,
-      members: noCohort,
-    });
-  }
-
+  // getPeople() is already ordered by cohort, so insertion order is K4, K5, …
+  for (const [title, members] of byCohort) groups.push({ title, members });
   return groups;
 }
 
