@@ -6,11 +6,11 @@ cohort: "K5"
 major: "Artificial Intelligence"
 position: "AI Engineer, TMA Solutions"
 research:
-  - Long-tailed Object Detection
-  - Dataset Curation for Computer Vision
-  - AI Applications in Agriculture
-  - Retrieval-Augmented Generation (RAG)
-  - Multi-Agent LLM Systems
+  - Computer Vision
+  - Object Detection
+  - Large Language Models
+  - Retrieval-Augmented Generation
+  - Multi-Agent Systems
 links:
   email: ng.t.thien01@gmail.com
   github: https://github.com/kaiincode
