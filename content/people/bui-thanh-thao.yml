@@ -4,7 +4,10 @@ callname: "Thảo"
 aliases: ["Thao Thanh Bui"]
 cohort: "K4"
 major: "Artificial Intelligence"
-position:
-research: []
+position: M.S. Student in Computer Science
+research: 
+  - Computer Vision
+  - Reinforcement Learning
 links: 
+  email: buithanhthao2004@gmail.com
   orcid: https://orcid.org/0009-0001-6490-8128
