@@ -4,7 +4,10 @@ callname: "Khang"
 aliases: ["Khang Vinh Nguyen", "Khang Nguyen"]
 cohort: "K5"
 major: "Artificial Intelligence"
-position: "AI Engineer, DXC Technology and Research Officer, RMIT University"
+position: |-
+  AI Engineer at DXC Technology 
+  Research Officer at RMIT University
 research: []
 links:
+  orcid: https://orcid.org/0009-0002-7156-2791
   researchgate: https://www.researchgate.net/profile/Khang-Nguyen-294
