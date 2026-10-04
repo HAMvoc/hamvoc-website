@@ -22,7 +22,8 @@ export type Person = {
   noPosition: boolean;
   research: string[];
   links: Partial<Record<"email" | "github" | "scholar" | "orcid" | "researchgate" | "linkedin" | "website", string>>;
-  images: { lg: string; sm: string; dither: string };
+  /** Generated from content/people/photos/<slug>.* by scripts/portraits.mjs */
+  photo: string;
   hasRealPhoto: boolean;
 };
 
@@ -81,11 +82,7 @@ function load(file: string): Person {
     noPosition: /^none$/i.test(raw.position?.trim() ?? ""),
     research: list(raw.research),
     links: Object.fromEntries(Object.entries(raw.links ?? {}).filter(([, v]) => v)),
-    images: {
-      lg: `/people/${slug}.jpg`,
-      sm: `/people/${slug}-sm.jpg`,
-      dither: `/people/${slug}-dither.png`,
-    },
+    photo: `/people/${slug}.jpg`,
     hasRealPhoto: hasRealPhoto(slug),
   };
 }

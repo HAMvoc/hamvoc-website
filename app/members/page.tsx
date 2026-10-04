@@ -26,10 +26,15 @@ export default function MembersPage() {
             </div>
 
             <div className={group.isAdvisor ? "advisor-grid" : "members-grid"}>
-              {group.members.map((p) => {
+              {group.members.map((p, i) => {
                 const papers = getPapersBy(p.slug).length;
                 return (
-                  <Link key={p.slug} href={`/members/${p.slug}/`} className="member-card">
+                  <Link
+                    key={p.slug}
+                    href={`/members/${p.slug}/`}
+                    className="member-card"
+                    style={{ "--i": Math.min(i, 8) } as React.CSSProperties}
+                  >
                     <Portrait person={p} />
                     <div className="member-info">
                       <h3 className="member-name">{p.name}</h3>

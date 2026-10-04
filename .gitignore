@@ -44,7 +44,6 @@ next-env.d.ts
 /public/people/
 /public/papers/
 /public/group.jpg
-/public/group-dither.png
 
 # omc state and tools
 .omc/

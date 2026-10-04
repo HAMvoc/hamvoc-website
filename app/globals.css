@@ -170,6 +170,7 @@ a {
   right: 16px;
   height: 2px;
   background-color: var(--c-red);
+  animation: tab-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* --- LAYOUT WRAPPER --- */
@@ -179,10 +180,12 @@ main {
 }
 
 /* --- PAGE TRANSITION --- */
+/* Every page is a fresh mount (see app/template.tsx), so these replay on each navigation:
+   the blocks of the page rise into place one after another. The header stays put. */
 @keyframes page-in {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -190,25 +193,56 @@ main {
   }
 }
 
-main {
-  animation: page-in 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+.view-section > * {
+  animation: page-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.view-section > :nth-child(2) { animation-delay: 0.06s; }
+.view-section > :nth-child(3) { animation-delay: 0.12s; }
+.view-section > :nth-child(4) { animation-delay: 0.18s; }
+.view-section > :nth-child(5) { animation-delay: 0.24s; }
+.view-section > :nth-child(n + 6) { animation-delay: 0.3s; }
+
+/* member cards come in one by one within their cohort */
+.members-grid > *,
+.advisor-grid > * {
+  animation: page-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.05s);
 }
 
-/* optional: the headline, text, photo and list arrive one after another */
-.view-section > * {
-  animation: page-in 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+/* the red tab marker draws itself under the tab you just opened */
+@keyframes tab-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
-.view-section > :nth-child(2) { animation-delay: 0.05s; }
-.view-section > :nth-child(3) { animation-delay: 0.1s; }
-.view-section > :nth-child(4) { animation-delay: 0.15s; }
-.view-section > :nth-child(5) { animation-delay: 0.2s; }
-.view-section > :nth-child(n + 6) { animation-delay: 0.25s; }
+
+/* photos settle in once loaded instead of popping */
+@keyframes photo-in {
+  from {
+    opacity: 0;
+    transform: scale(1.04);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.gallery-main img,
+.portrait-photo-real {
+  animation: photo-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
 
 /* respect "reduce motion" system settings */
 @media (prefers-reduced-motion: reduce) {
-  main,
-  .view-section > * {
-    animation: none;
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -384,6 +418,18 @@ main {
 
 .member-card:hover {
   border-color: var(--c-black);
+}
+
+.member-card .portrait-box {
+  overflow: hidden;
+}
+
+.member-card .portrait-photo-real {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.member-card:hover .portrait-photo-real {
+  transform: scale(1.04);
 }
 
 .member-card:hover .member-name {

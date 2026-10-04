@@ -7,7 +7,7 @@ export function Portrait({ person, priority = false }: { person: Person; priorit
       {person.hasRealPhoto ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={person.images.lg}
+          src={person.photo}
           alt={person.name}
           width={960}
           height={1280}
