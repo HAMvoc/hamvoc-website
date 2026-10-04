@@ -67,7 +67,11 @@ async function main() {
 
   // public/people/ is generated: clear out anything that no longer has a source photo
   for (const f of await readdir(outDir)) {
-    if (!wanted.has(f)) await unlink(path.join(outDir, f));
+    if (wanted.has(f)) continue;
+    // a file still open elsewhere (e.g. in an image viewer on Windows) can't be removed yet
+    await unlink(path.join(outDir, f)).catch((err) =>
+      console.warn(`portraits: couldn't remove public/people/${f} (${err.code}); remove it by hand`),
+    );
   }
   console.log(`portraits: ${made} updated, ${wanted.size} photos in total`);
 
