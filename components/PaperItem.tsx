@@ -18,6 +18,7 @@ export function PaperItem({ paper }: { paper: Paper }) {
           paper.title
         )}
       </h3>
+
       <p className="paper-authors">
         {paper.authors.map((a, i) => (
           <Fragment key={`${a.name}-${i}`}>
@@ -32,15 +33,36 @@ export function PaperItem({ paper }: { paper: Paper }) {
           </Fragment>
         ))}
       </p>
+
       <div className="paper-meta-row">
         <span className="paper-venue">{meta}</span>
-        {paper.award && <span className="paper-award">{paper.award}</span>}
+
+        {paper.award && (
+          <span className="paper-award">{paper.award}</span>
+        )}
+
         {paper.links.map((l) => (
-          <a key={l.href} href={l.href} className="paper-link" target="_blank" rel="noopener noreferrer">
+          <a
+            key={l.href}
+            href={l.href}
+            className="paper-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {l.label} ↗
           </a>
         ))}
-        {paper.isbn && <span className="paper-venue">ISBN {paper.isbn}</span>}
+
+        {paper.isbn && (
+          <a
+            href={paper.isbnUrl || "#"}
+            className="paper-link"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            ISBN {paper.isbn} ↗
+          </a>
+        )}
       </div>
     </li>
   );
