@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Portrait } from "@/components/Portrait";
-import { getPapersBy } from "@/lib/papers";
 import { getGroupedMembers } from "@/lib/people";
 
 export const metadata: Metadata = {
@@ -26,30 +25,27 @@ export default function MembersPage() {
             </div>
 
             <div className={group.isAdvisor ? "advisor-grid" : "members-grid"}>
-              {group.members.map((p, i) => {
-                const papers = getPapersBy(p.slug).length;
-                return (
-                  <Link
-                    key={p.slug}
-                    href={`/members/${p.slug}/`}
-                    className="member-card"
-                    style={{ "--i": Math.min(i, 8) } as React.CSSProperties}
-                  >
-                    <Portrait person={p} />
-                    <div className="member-info">
-                      <h3 className="member-name">{p.name}</h3>
-                      <div className="member-role">
-                        {group.isAdvisor ? p.position : p.major || "Research member"}
-                      </div>
-                      {papers > 0 && (
-                        <div className="member-major">
-                          {papers} {papers === 1 ? "publication" : "publications"}
-                        </div>
-                      )}
+              {group.members.map((p, i) => (
+                <Link
+                  key={p.slug}
+                  href={`/members/${p.slug}/`}
+                  className="member-card"
+                  style={{ "--i": Math.min(i, 8) } as React.CSSProperties}
+                >
+                  <Portrait person={p} />
+                  <div className="member-info">
+                    <h3 className="member-name">{p.name}</h3>
+                    <div className="member-role">
+                      {group.isAdvisor ? p.position : p.major || "Research member"}
                     </div>
-                  </Link>
-                );
-              })}
+                    {!group.isAdvisor && p.position && (
+                      <div className="member-major">
+                        {p.position.replace(/\r?\n+/g, " · ")}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              ))}
             </div>
           </div>
         ))}
