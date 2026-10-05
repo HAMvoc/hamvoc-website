@@ -4,8 +4,13 @@ callname: "Châu"
 aliases: ["Chau Minh Ha Nguyen"]
 cohort: "K4"
 major: "Internet of Things"
-position: 
-research: []
+position:
+research:
+  [
+    Artificial Intelligence and Machine Learning,
+    AI-enabled Intelligent Robotic Systems,
+    Robotics and Autonomous Systems
+  ]
 links:
   orcid: https://orcid.org/0009-0005-6522-3509
   ResearchGate: https://www.researchgate.net/profile/Nguyen-Minh-Chau-5?ev=hdr_xprf 
