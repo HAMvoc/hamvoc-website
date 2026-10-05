@@ -1,8 +1,16 @@
 # Name in Vietnamese for the site; aliases are the spellings used on papers.
 name: "Phùng Gia Khang"
 callname: "Khang"
-aliases: ["Khang Gia Phung"]
+aliases: ["Khang Gia Phung", Khang Phung]
 cohort: "K5"
 major: "Artificial Intelligence"
 position: "AI Engineer Intern at DIGI-TEXX Vietnam"
-research: []
+research:
+  - Computer Vision
+  - Document AI
+  - Visual Data Analysis
+links:
+  email: phunggiakhang675@gmail.com
+  github: https://github.com/PGKhang675
+  orcid: https://orcid.org/0009-0000-1582-2742
+  linkedin: https://www.linkedin.com/in/phunggiakhang/
