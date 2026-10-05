@@ -104,7 +104,6 @@ export default async function MemberPage({ params }: PageProps<"/members/[slug]"
           <div className="profile-papers">
             <div className="cohort-header">
               <h2 className="cohort-title">Publications</h2>
-              <span className="cohort-count">{papers.length}</span>
             </div>
             <ul className="paper-list">
               {papers.map((paper) => (
