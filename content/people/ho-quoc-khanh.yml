@@ -4,5 +4,7 @@ callname: "Khánh"
 aliases: ["Khanh Quoc Ho"]
 cohort: "K6"
 major: "Software Development"
-position: "Engineer at NAB Vietnam"
-research: []
+position: "Software Engineer at NAB Innovation Centre of Vietnam"
+research:
+links:
+  github: https://github.com/Hanzest

@@ -5,6 +5,9 @@ aliases: ["Phuong Binh Vu"]
 cohort: "K6"
 major: "Artificial Intelligence"
 position: 
-research: []
+research: 
+  - Computer Vision in software deliverables
+  - Natural Language Processing in applications
+  - Audio and Speech Processing in real-time systems
 links:
   orcid: https://orcid.org/0009-0006-6227-595X
