@@ -1,8 +1,18 @@
 # Name in Vietnamese for the site; aliases are the spellings used on papers.
 name: "Đinh Việt Phát"
-callname: "Phát"
+callname: "Veo"
 aliases: ["Phat Viet Dinh"]
 cohort: "K5"
 major: "Artificial Intelligence"
 position: 
-research: []
+research: 
+- Computer Vision
+- Explainable AI
+- LLM & MoE
+- AI for Health & Elderly Care
+links:
+  email: phatdinh171205.work@gmail.com
+  github: https://github.com/Velleigr
+  orcid: https://orcid.org/my-orcid?orcid=0009-0002-4837-0732
+  researchgate: https://www.researchgate.net/profile/Phat-Dinh-2?ev=hdr_xprf
+  linkedin: https://www.linkedin.com/in/viet-phat-dinh-24209232b/
