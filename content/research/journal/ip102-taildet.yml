@@ -2,7 +2,7 @@ title: "IP102-TailDet: A budget-aware tail completion benchmark for long-tailed 
 authors: ["Thien Le Truong Nguyen", "Huyen Ngoc Truong", "Quang Van Huy Nguyen", "Minh Anh Hoang", "Khuong Nguyen-Vinh"]
 venue: "Array"
 publisher: "Elsevier"
-date: "2026-09"
+date: "2026-09-15"
 links:
   doi: https://doi.org/10.1016/j.array.2026.101246
   researchgate: https://www.researchgate.net/publication/414412013_IP102-TailDet_A_budget-aware_tail_completion_benchmark_for_long-tailed_insect_pest_detection
