@@ -4,5 +4,12 @@ callname: "Vinh"
 aliases: ["Vinh Khai Han"]
 cohort: "K4"
 major: "Artificial Intelligence"
-position:
-research: []
+position: "AI/ML Engineer at Rackspace Technology"
+research: 
+- Computer Vision
+- Multi-Agent Systems
+- Applications of AI in many fields
+- Interpretable AI
+links:
+  orcid: https://orcid.org/0009-0001-1452-8602
+
