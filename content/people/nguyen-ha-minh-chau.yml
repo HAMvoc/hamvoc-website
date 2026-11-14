@@ -1,10 +1,10 @@
 # Name in Vietnamese for the site; aliases are the spellings used on papers.
 name: "Nguyễn Hà Minh Châu"
 callname: "Châu"
-aliases: ["Chau Minh Ha Nguyen"]
+aliases: ["Chau Ha Minh Nguyen"]
 cohort: "K4"
 major: "Internet of Things"
-position:
+position: "Module Engineer Intern at Intel Vietnam"
 research:
   [
     Artificial Intelligence and Machine Learning,
