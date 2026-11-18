@@ -5,3 +5,4 @@ publisher: "Elsevier"
 date: "2026-11-14"
 links:
   doi: https://doi.org/10.1016/j.array.2026.101402
+  researchgate: https://www.researchgate.net/publication/417916206_Calibrating_severity_prediction_for_unseen_drugs_A_topology-aware_objective_for_strict_semi-inductive_DDI_classification
