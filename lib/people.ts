@@ -21,6 +21,8 @@ export type Person = {
   /** `position: none` — not working at the moment, so the field is left off */
   noPosition: boolean;
   research: string[];
+  /** Year they graduated (e.g. 2026), from `grad:` in their profile; null if not yet */
+  gradYear: number | null;
   links: Partial<Record<"email" | "github" | "scholar" | "orcid" | "researchgate" | "linkedin" | "website", string>>;
   /** Generated from content/people/photos/<slug>.* by scripts/portraits.mjs */
   photo: string;
@@ -46,6 +48,7 @@ type Raw = {
   major?: string;
   position?: string;
   research?: string[] | string;
+  grad?: string | number;
   links?: Person["links"];
 };
 
@@ -81,6 +84,7 @@ function load(file: string): Person {
     position: /^none$/i.test(raw.position?.trim() ?? "") ? "" : (raw.position?.trim() ?? ""),
     noPosition: /^none$/i.test(raw.position?.trim() ?? ""),
     research: list(raw.research),
+    gradYear: Number(String(raw.grad ?? "").match(/\d{4}/)?.[0]) || null,
     links: Object.fromEntries(Object.entries(raw.links ?? {}).filter(([, v]) => v)),
     photo: `/people/${slug}.jpg`,
     hasRealPhoto: hasRealPhoto(slug),

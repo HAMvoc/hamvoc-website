@@ -8,6 +8,7 @@ const links = [
   ["/", "Home"],
   ["/members/", "Members"],
   ["/research/", "Research"],
+  ["/gallery/", "Gallery"],
 ] as const;
 
 export function Header() {
